@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+* {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+@theme {
+  --color-primary: #3b5d50;
+  --color-secondary: #f9bf29;
+  --color-dark: #2f2f2f;
+  --color-light: #dce5e4;
+  --color-lighter: #eff2f1;
+  --color-body_color: #6a6a6a;
+};
+
+.made-container {
+  @apply w-[90%] mx-auto md:px-0
+}
+.styled-scrollbar::-webkit-scrollbar {
+  @apply lg:w-2 w-1 h-1;
+}
+.styled-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-black/20 rounded-full;
+}
+@page {
+  size: 58mm auto;
+  margin: 0;
+}
+
+@media print {
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  body * { visibility: hidden !important; }
+  #receipt-area, #receipt-area * { visibility: visible !important; }
+ 
+  #receipt-area {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 54mm !important;
+    height: auto !important;
+    margin: 0 auto !important; /* center horizontally */
+    padding: 0 0 10mm 0 !important;
+    page-break-inside: avoid !important;
+    overflow: visible !important;
+    transform: translateY(-1mm) !important;
+    transform-origin: top left !important;
+  }
+  
+}
+
+.swiper-button-prev{
+  @apply bg-primary rounded-full w-18 h-18 p-2 text-sm
+}
+.swiper-button-prev svg,
+.swiper-button-next svg {
+  scale: 0.8;
+  color: white;
+  fill: white;
+}
+.swiper-button-next{
+  @apply bg-primary rounded-full w-18 h-18 p-2 text-sm
+}
+.swiper-pagination-bullets {
+  bottom: 0px !important;
+}
+.swiper-pagination-bullet {
+  @apply bg-body_color
+}
+
+.swiper-pagination-bullet.swiper-pagination-bullet-active {
+  @apply bg-primary
+}
