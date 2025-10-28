@@ -1,27 +1,30 @@
 import React from 'react'
 import { formatterUtility } from '../../utilities/formatterutility'
-import { FaPlusCircle } from 'react-icons/fa'
+import { GoPlus } from "react-icons/go";
+import { Link } from 'react-router-dom'
 
-const ProductCard = ({ name, price, image }) => {
+const ProductCard = ({ id, name, description, price, image }) => {
     return (
-        <div className='bg-white py-4 px-2 rounded-xl group h-[320px] overflow-hidden flex flex-col items-start justify-center relative'>
-            <div className="overflow-hidden h-[250px] mx-auto">
-                <img src={image} alt={name} className='w-full h-full object-cover' />
+        <Link 
+            to={`/shop/${id}`}
+            className='lg:hover:bg-body_color/10 lg:bg-transparent bg-body_color/10 transition-all duration-300 rounded-xl group min-h-80 overflow-hidden flex flex-col items-start justify-center relative'
+        >
+            <div className="bg-white rounded-t-[inherit] overflow-hidden h-[250px] mx-auto w-full p-6">
+                <img src={image} alt={name} className='w-full h-full object-contain' />
             </div>
-            <div className="text-start w-full font-medium mt-2">
-                <h3>{name}</h3>
-                <div className="flex items-center justify-between">
-                    <h3 className='font-bold text-xl italic!'>{formatterUtility(Number(price))}</h3>
-                    <button
-                        type='button'
-                        className='lg:translate-x-43 group-hover:translate-x-0 transition-all duration-500 cursor-pointer bg-primary px-4 py-2 text-white text-sm flex items-center gap-1 rounded'
-                    >
-                        <FaPlusCircle />
-                        Add to cart
-                    </button>
-                </div>
+            <div className="text-start w-full mt-2 p-3 space-y-2">
+                <h3 className='text-lg font-medium!'>{name}</h3>
+                <p className='text-xs line-clamp-3'>{description}</p>
+                <h3 className='font-bold! pt-2 text-xl font-[Montserrat]!'>{formatterUtility(Number(price))}</h3>
+                <button
+                    type='button'
+                    className='mt-6 w-full cursor-pointer text-primary border border-primary hover:bg-primary px-4 py-2 hover:text-white text-sm flex items-center justify-center gap-2 rounded-md transition-all duration-300'
+                >
+                    <GoPlus size={20} />
+                    Order Now
+                </button>
             </div>
-        </div>
+        </Link>
     )
 }
 

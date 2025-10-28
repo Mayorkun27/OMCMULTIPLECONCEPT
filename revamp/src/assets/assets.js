@@ -1,6 +1,4 @@
 import logo from "./images/logo.png";
-import sofa from "./images/sofa.png";
-import couch from "./images/couch.png";
 import lightdots from "./images/lightdots.svg";
 import yellowdots from "./images/yellowdots.svg";
 import greendots from "./images/greendots.svg";
@@ -10,17 +8,20 @@ import helpimg from "./images/helpimg.jpg";
 import helpimg2 from "./images/helpimg2.jpg";
 import helpimg3 from "./images/helpimg3.jpg";
 import person1 from "./images/person1.jpg";
+import person2 from "./images/person2.png";
 import post1 from "./images/post1.jpg";
 import post2 from "./images/post2.jpg";
 import post3 from "./images/post3.jpg";
-import person2 from "./images/person2.jpeg";
-import person3 from "./images/person3.jpg";
-import person4 from "./images/person4.jpg";
+import heroimg from "./images/heroimg.jpg";
+import heroimg2 from "./images/heroimg2.jpg";
+import heroimg3 from "./images/heroimg3.jpg";
+import newsimg1 from "./images/newsimg1.jpg";
+import newsimg2 from "./images/newsimg2.jpg";
+import newsimg3 from "./images/newsimg3.jpg";
+import newsimg4 from "./images/newsimg4.jpg";
 
 export const assets = {
     logo,
-    sofa,
-    couch,
     lightdots,
     yellowdots,
     greendots,
@@ -30,10 +31,15 @@ export const assets = {
     helpimg2,
     helpimg3,
     person1,
+    person2,
     post1,
     post2,
     post3,
-    person2,
-    person3,
-    person4,
+    heroimg,
+    heroimg2,
+    heroimg3,
+    newsimg1,
+    newsimg2,
+    newsimg3,
+    newsimg4,
 }

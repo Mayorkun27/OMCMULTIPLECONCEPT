@@ -1,9 +1,26 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { FaBars, FaShoppingCart, FaUser, FaUserAlt } from "react-icons/fa"
 
 const NavBar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 10) {
+                setIsScrolled(true);
+            } else {
+                setIsScrolled(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
 
     const navLinks = [
         {
@@ -29,27 +46,31 @@ const NavBar = () => {
     ]
 
     return (
-        <header className='bg-primary text-white relative left-0 top-0 z-99 w-full py-4'>
-            <div className="made-container flex gap-4 items-center justify-between">
+        <header className={`left-1/2 -translate-x-1/2 top-0 w-[90%] py-4 z-99 rounded-full transition-all duration-300 ${isScrolled ? 'bg-white text-black shadow-md fixed top-4 md:px-6 px-4' : 'bg-transparent text-white absolute'}`}>
+            <div className="made-containe flex gap-4 items-center justify-between">
                 <div className="flex items-center gap-2">
-                    <button 
+                    <button
                         className='lg:hidden inline'
                         onClick={() => setIsOpen(prev => !prev)}
                     >
                         <FaBars />
                     </button>
-                    <h4 className='md:text-2xl text-sm font-bold leading-4'>ONIPTTECHMULTIPLECONCEPT</h4>
+                    {/* <h4 className='md:text-xl text-sm leading-4 font-[Montserrat]! font-bold!'>ONIPTTECHMULTIPLECONCEPT</h4> */}
+                    <h4 className='md:text-xl text-sm leading-4 font-[Montserrat]! font-bold!'>OMC</h4>
                 </div>
                 <div className="flex items-center gap-8">
-                    <ul className={`${isOpen ? "grid grid-cols-2 left-0 -z-1 w-full p-[5%] backdrop-blur-md bg-white/10" : "lg:flex"} lg:static absolute -left-[100dvh] top-12 transition-all duration-1000 items-center gap-8`}>
+                    <ul className={`${isOpen ? "grid grid-cols-2 left-0 -z-1 w-full p-[5%] backdrop-blur-md bg-black/10" : "hidden lg:flex"} lg:static absolute lg:left-auto -left-[100dvh] top-12 transition-all duration-1000 items-center gap-8`}>
                         {
                             navLinks.map((link, index) => (
-                                <li key={index}>
-                                    <NavLink 
-                                        to={link.path} 
-                                        className={({ isActive }) => `font-medium text-sm text-light pb-2 border-b-3 border-transparent hover:border-secondary transition-all duration-500 ${isActive && "border-secondary! text-white"}`}
+                                <li 
+                                    key={index}
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    <NavLink
+                                        to={link.path}
+                                        className={({ isActive }) => `font-medium text-xs pb-2 border-b-3 border-transparent hover:border-secondary transition-all duration-500 ${isActive ? "border-secondary!" : ''} ${!isScrolled || isOpen ? 'text-white' : 'text-black'}`}
                                     >
-                                    {link.name}
+                                        {link.name}
                                     </NavLink>
                                 </li>
                             ))
@@ -57,14 +78,16 @@ const NavBar = () => {
                     </ul>
                     <div className="flex items-center md:gap-8 gap-4">
                         <Link
-                            className='text-white flex items-center gap-2 rounded-md'
-                        >
-                            <FaUserAlt />
-                        </Link>
-                        <Link
-                            className='text-white flex items-center gap-2 rounded-md'
+                            to="/cart"
+                            className='flex items-center gap-2 rounded-md'
                         >
                             <FaShoppingCart />
+                        </Link>
+                        <Link
+                            to="/login"
+                            className='flex items-center gap-2 rounded-md'
+                        >
+                            <FaUserAlt />
                         </Link>
                     </div>
                 </div>

@@ -11,6 +11,7 @@ import { Navigation, Pagination, A11y, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import TestimonialSlider from '../../components/sections/TestimonialSlider';
 
 const Home = () => {
 
@@ -82,9 +83,16 @@ const Home = () => {
   return (
     <>
       {/* Herosection */}
-      <div className='bg-primary lg:h-[91dvh] md:h-[70vh] h-[95dvh]'>
+      <div 
+        className='lg:h-dvh md:h-[80vh] h-dvh'
+        style={{
+          background: `linear-gradient(135deg, #000000ba, #000000ba), url(${assets.heroimg2})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
         <div className="made-container h-full flex lg:gap-0 gap-6 items-center relative z-2">
-          <div className="lg:w-2/5 md:w-3/4 flex flex-col gap-6 text-lighter col-span-1">
+          <div className="lg:w-1/2 md:w-3/4 flex flex-col gap-6 text-lighter col-span-1">
             <h3 className='font-bold md:text-4xl text-[32px] md:leading-none leading-8'>ONIPTTECH MULTIPLE CONCEPT</h3>
             <p className='leading-7 text-sm text-white/50'>At ONIPTTECH MULTIPLE CONCEPT, We bring colors to life! As a leading paint production company, we specialize in crafting high-quality paints and interior decoration solutions that transform spaces into stunning works of art.</p>
             <div className="flex items-center gap-4">
@@ -98,19 +106,16 @@ const Home = () => {
               >Explore</Link>
             </div>
           </div>
-          <div className="absolute md:-bottom-10 -bottom-5 -right-[15%] lg:w-3/4 md:w-full w-[150%] -z-1 lg:opacity-100 opacity-30">
-            <img src={assets.couch} alt="Couch Image" className='w-full object-cover' />
-          </div>
-          <div className="absolute -right-[10%] top-0 -z-2">
+          <div hidden className="absolute -right-[10%] scale-75 rotate-45 top-24 -z-2">
             <img src={assets.lightdots} alt="light dots" className='w-4/5 animate-pulse object-cover' />
           </div>
         </div>
       </div>
       {/* Shop */}
-      <div className="made-container grid lg:grid-cols-4 items-center gap-8 py-20">
-        <div className="text-dark/90 space-y-4 lg:w-full md:w-4/5">
-          <h3 className='text-3xl font-medium'>Produced and Crafted with excellent material.</h3>
-          <p className='text-body_color leading-7 text-sm'>With a passion for innovation and customer satisfaction, we provide be spoke interior design services, expert color consultations, and durable paint products to enhance your home or office. Let's paint your world with vibrant colors and style!</p>
+      <div className="made-container space-y-8 py-20">
+        <div className="text-dark/90 space-y-4 md:w-4/5">
+          <h3 className='text-3xl font-medium! font-[Montserrat]!'>Produced and Crafted with excellent material.</h3>
+          <p className='text-body_color leading-7 text-sm'>With a passion for innovation and customer satisfaction, here's our extensive collection of premium paint for you to explore, each carefully crafted to inspire and transform your world with vibrant colors and style!</p>
           <Link
             to={"/shop"}
             className='md:block hidden'
@@ -121,28 +126,31 @@ const Home = () => {
             >Explore</button>
           </Link>
         </div>
-        <div className="md:col-span-3 lg:grid flex md:overflow-auto overflow-x-scroll grid-cols-3 gap-6">
-          <div className="lg:max-w-full lg:min-w-auto min-w-[320px]">
-            <ProductCard 
-              name="Supercoat Emulsion Paint"
-              price="100000"
-              image={assets.product1}
-            />
-          </div>
-          <div className="lg:max-w-full lg:min-w-auto min-w-[320px]">
-            <ProductCard 
-              name="Supercoat Emulsion Paint"
-              price="100000"
-              image={assets.product1}
-            />
-          </div>
-          <div className="lg:max-w-full lg:min-w-auto min-w-[320px]">
-            <ProductCard 
-              name="Supercoat Emulsion Paint"
-              price="100000"
-              image={assets.product1}
-            />
-          </div>
+        <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-6">
+          <ProductCard 
+            name="OMC Emulsion Paint"
+            description="Suitable as a finishing coat for interior/exterior concrete plaster or cement rendered surfaces to give a highly granular, attractive finish"
+            price="100000"
+            image={assets.product1}
+          />
+          <ProductCard 
+            name="OMC Emulsion Paint"
+            description="Suitable as a finishing coat for interior/exterior concrete plaster or cement rendered surfaces to give a highly granular, attractive finish"
+            price="100000"
+            image={assets.product1}
+          />
+          <ProductCard 
+            name="OMC Emulsion Paint"
+            description="Suitable as a finishing coat for interior/exterior concrete plaster or cement rendered surfaces to give a highly granular, attractive finish"
+            price="100000"
+            image={assets.product1}
+          />
+          <ProductCard 
+            name="OMC Emulsion Paint"
+            description="Suitable as a finishing coat for interior/exterior concrete plaster or cement rendered surfaces to give a highly granular, attractive finish"
+            price="100000"
+            image={assets.product1}
+          />
         </div>
         <div className="md:hidden block">
           <Link
@@ -158,7 +166,7 @@ const Home = () => {
       {/* why */}
       <div className="made-container grid items-center justify-between md:grid-cols-12 gap-8 py-20">
         <div className="text-dark lg:col-span-6 md:col-span-7">
-          <h3 className='text-3xl font-medium mb-2'>Why Choose Us</h3>
+          <h3 className='text-3xl font-medium! mb-2 font-[Montserrat]!'>Why Choose Us</h3>
           <p className='text-body_color leading-7 text-sm'>At Onipttech Multiple Concept, we're dedicated to delivering exceptional paint solutions and interior decoration services that exceed your expectations. Here's why you should choose us:</p>
           <div className="grid grid-cols-2 gap-8 mt-8">
             {
@@ -198,7 +206,7 @@ const Home = () => {
           </div>
         </div>
         <div className="text-dark lg:col-span-5 md:col-span-6">
-          <h3 className='lg:text-3xl md:text-2xl text-3xl font-medium mb-4'>We Help You Make Modern Interior Design</h3>
+          <h3 className='lg:text-3xl md:text-2xl text-3xl font-medium! font-[Montserrat]! mb-4'>We Help You Make Modern Interior Design</h3>
           <p className='text-body_color leading-7 text-sm'>At Onipttech, we help you create modern, stunning interiors that reflect your style and personality. From sleek and minimalist to bold and eclectic, we'll work with you to bring your vision to life.</p>
           <div className="grid grid-cols-2 gap-6 mt-8">
             {
@@ -222,7 +230,7 @@ const Home = () => {
         </div>
       </div>
       {/* testimonials */}
-      <div className='made-container py-20 relative'>
+      {/* <div className='made-container py-20 relative'>
         <h3 className='lg:text-3xl md:text-2xl text-3xl font-medium lg:mb-6 text-center'>Testimonials</h3>
         <Swiper
           modules={[Navigation, Pagination, A11y, Autoplay]}
@@ -250,11 +258,15 @@ const Home = () => {
             </SwiperSlide>
           ))}
         </Swiper>
+      </div> */}
+      <div className='made-container lg:pt-20 md:pt-12 pb-20 relative'>
+        <h3 className='lg:text-3xl md:text-2xl text-3xl font-medium! mb-8 text-center font-[Montserrat]!'>Testimonials</h3>
+        <TestimonialSlider />
       </div>
       {/* blog */}
       <div className="made-container lg:pb-20">
         <div className='flex items-center justify-between mb-8'>
-          <h3 className='lg:text-3xl md:text-2xl text-3xl font-medium text-center'>Recent Blog</h3>
+          <h3 className='lg:text-3xl md:text-2xl text-3xl font-medium! text-center font-[Montserrat]!'>Recent Blog</h3>
           <Link className='underline'>View All Posts</Link>
         </div>
         <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-8">

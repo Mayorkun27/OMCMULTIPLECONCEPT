@@ -5,11 +5,10 @@ import { RiTruckLine } from "react-icons/ri";
 import { LuShoppingBag } from "react-icons/lu";
 import { CgSupport } from "react-icons/cg";
 import { PiArrowsClockwiseLight } from "react-icons/pi";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, A11y, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import TestimonialSlider from '../../components/sections/TestimonialSlider';
 
 const About = () => {
 
@@ -38,27 +37,15 @@ const About = () => {
 
   const team = [
     {
-      name: "Lawson Arnold",
-      positon: "CEO, Founder, Atty.",
+      name: "Hammed Lawal Ayinde",
+      positon: "C.E.O/Managing Director.",
       image: assets.person1,
       bio: "Separated they live in. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.",
     },
     {
-      name: "Maria Jones",
-      positon: "CEO, Founder, Atty.",
+      name: "Julius Omosebi",
+      positon: "Marketer",
       image: assets.person2,
-      bio: "Separated they live in. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.",
-    },
-    {
-      name: "Jeremy Walker",
-      positon: "CEO, Founder, Atty.",
-      image: assets.person3,
-      bio: "Separated they live in. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.",
-    },
-    {
-      name: "Kathryn Ryan",
-      positon: "CEO, Founder, Atty.",
-      image: assets.person4,
       bio: "Separated they live in. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.",
     },
   ]
@@ -89,10 +76,15 @@ const About = () => {
       <MiniHerosection 
         title={"About Us"}
         subText={"ONIPTTECH MULTIPLE CONCEPT, We bring colors to life! As a leading paint production company, we specialize in crafting high-quality paints and interior decoration solutions that transform spaces into stunning works of art."}
+        bgStyle={{
+          background: `linear-gradient(135deg, #000000ba, #000000ba), url(${assets.newsimg3})`,
+          backgroundSize: "cover",
+          backgroundPosition: "bottom",
+        }}
       />
       <div className="made-container grid items-center justify-between md:grid-cols-12 gap-8 py-20">
         <div className="text-dark lg:col-span-6 md:col-span-7">
-          <h3 className='text-3xl font-medium mb-2'>Why Choose Us</h3>
+          <h3 className='text-3xl font-medium! font-[Montserrat]! mb-2'>Why Choose Us</h3>
           <p className='text-body_color leading-7 text-sm'>At Onipttech Multiple Concept, we're dedicated to delivering exceptional paint solutions and interior decoration services that exceed your expectations. Here's why you should choose us:</p>
           <div className="grid grid-cols-2 gap-8 mt-8">
             {
@@ -115,50 +107,25 @@ const About = () => {
           </div>
         </div>
       </div>
-      <div className="made-container lg:pb-20">
-        <h3 className='lg:text-3xl md:text-2xl text-3xl font-medium mb-8 text-center'>Meet the Team</h3>
-        <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-8">
+      <div className="made-container lg:pb-10">
+        <h3 className='lg:text-3xl md:text-2xl text-3xl font-medium! font-[Montserrat]! mb-8 text-center'>Meet the Team</h3>
+        <div className="grid md:grid-cols-2 gap-8">
           {team.map((item) => (
-              <div key={item.date} className='flex flex-col items-start text-dark/80'>
-                <img src={item.image} alt={item.name} className='w-full h-[300px] object-cover rounded-xl mb-4' />
-                <div className="tracking-wide">
-                  <h3 className='font-semibold text-dark text-xl'>{item.name}</h3>
-                  <p className='text-dark/70 text-sm'>{item.positon}</p>
-                  <p className='text-dark/70 mt-4 text-sm'>{item.bio}</p>
-                </div>
+            <div key={item.date} className='flex flex-row gap-4 p-4 bg-white h-[200px] rounded-xl items-center text-dark/80'>
+              <img src={item.image} alt={item.name} className='lg:w-[150px] w-[130px] h-full! object-cover rounded-[inherit]' />
+              <div className="tracking-wide">
+                <h3 className='font-semibold! text-dark lg:text-xl text-lg font-[Montserrat]!'>{item.name}</h3>
+                <p className='text-dark/70 text-sm'>{item.positon}</p>
+                {/* <p className='text-dark/70 mt-4 text-sm'>{item.bio}</p> */}
               </div>
+            </div>
           ))}
 
         </div>
       </div>
-      <div className='made-container py-20 relative'>
+      <div className='made-container pt-20 lg:pb-20 relative'>
         <h3 className='lg:text-3xl md:text-2xl text-3xl font-medium lg:mb-6 text-center'>What our Customers say about us</h3>
-        <Swiper
-          modules={[Navigation, Pagination, A11y, Autoplay]}
-          spaceBetween={100}
-          slidesPerView={1}
-          loop
-          navigation
-          pagination={{ clickable: true }}
-          autoplay={{
-            delay: 2500,
-            disableOnInteraction: false,
-          }}
-          className="lg:w-[90%] lg:px-20! pb-12!"
-        >
-          {testimonials.map((item) => (
-            <SwiperSlide key={item}>
-              <div className='md:p-10 pt-10 pb-0 flex flex-col items-center justify-center text-center text-dark/80'>
-                <p className='md:text-xl text-sm'>{item.body}</p>
-                <div className="mt-10 text-sm">
-                  <img src={item.image} alt={item.name} className='w-20 h-20 mx-auto object-cover rounded-full mb-3' />
-                  <h3 className='font-bold text-dark'>{item.name}</h3>
-                  <p>{item.position}</p>
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        <TestimonialSlider />
       </div>
     </div>
   )
