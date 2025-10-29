@@ -5,7 +5,7 @@ import { HiOutlineMinusSmall } from 'react-icons/hi2';
 import { GoPlus } from 'react-icons/go';
 import { formatterUtility } from '../../utilities/formatterutility';
 
-const Cartcard = () => {
+const CartCard = () => {
   return (
     <div className='flex items-center justify-between md:gap-6 gap-4 border border-body_color/30 rounded-xl overflow-hidden px-3 md:py-1 py-2 shadow-sm'>
         <div className="flex flex-col items-center justify-center gap-2">
@@ -58,4 +58,4 @@ const Cartcard = () => {
   )
 }
 
-export default Cartcard
+export default CartCard
