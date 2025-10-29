@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import NewsLetter from "../components/sections/NewsLetter";
 
 const MainLayout = ({ children }) => {
+
   return (
     <div className="overflow-x-hidden styled-scrollbar min-h-screen bg-lighter">
       <NavBar />

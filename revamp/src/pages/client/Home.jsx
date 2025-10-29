@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { assets } from '../../assets/assets'
 import { Link } from 'react-router-dom'
 import ProductCard from '../../components/cards/ProductCard';
@@ -14,6 +14,10 @@ import 'swiper/css/navigation';
 import TestimonialSlider from '../../components/sections/TestimonialSlider';
 
 const Home = () => {
+
+  useEffect(() => {
+    window.scroll(0, 0)
+  }, [])
 
   const whys = [
     {

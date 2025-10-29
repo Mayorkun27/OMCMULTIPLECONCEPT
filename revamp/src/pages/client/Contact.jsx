@@ -1,12 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import MiniHerosection from '../../components/MiniHerosection'
 import { assets } from '../../assets/assets'
 import { useFormik } from 'formik'
 import * as Yup from "yup";
 import { FaPaperPlane } from 'react-icons/fa';
 import { MdLocationPin, MdMail, MdPhone } from 'react-icons/md';
+import { LuLoaderCircle } from "react-icons/lu";
 
 const Contact = () => {
+
+  useEffect(() => {
+    window.scroll(0, 0)
+  }, [])
 
   const formik = useFormik({
     initialValues: {
@@ -30,6 +35,7 @@ const Contact = () => {
       console.log(values)
     }
   })
+
   return (
     <div>
       <MiniHerosection
@@ -124,8 +130,12 @@ const Contact = () => {
               disabled={!formik.isValid || formik.isSubmitting}
               className="md:col-span-2 rounded-lg bg-primary h-[50px] w-full px-4 text-base text-light cursor-pointer flex items-center justify-center gap-2 disabled:cursor-not-allowed"
             >
-              <span>Send</span>
-              <FaPaperPlane className="text-lg" />
+              {formik.isSubmitting ? "Sending..." : "Send"}
+              {formik.isSubmitting ? (
+                <LuLoaderCircle className="text-lg animate-spin" />
+              ) : (
+                <FaPaperPlane className="text-lg" />
+              )}
             </button>
           </form>
         </div>

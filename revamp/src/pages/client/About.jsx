@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import MiniHerosection from '../../components/MiniHerosection'
 import { assets } from '../../assets/assets'
 import { RiTruckLine } from "react-icons/ri";
@@ -11,6 +11,10 @@ import 'swiper/css/navigation';
 import TestimonialSlider from '../../components/sections/TestimonialSlider';
 
 const About = () => {
+
+  useEffect(() => {
+    window.scroll(0, 0)
+  }, [])
 
   const whys = [
     {

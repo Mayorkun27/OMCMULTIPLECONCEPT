@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import MiniHerosection from '../../components/MiniHerosection'
 import ProductCard from '../../components/cards/ProductCard'
 import { assets } from '../../assets/assets'
 
 const Shop = () => {
+
+  useEffect(() => {
+    window.scroll(0, 0)
+  }, [])
 
   const products = [
     {
