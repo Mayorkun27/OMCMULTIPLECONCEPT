@@ -2,9 +2,9 @@ import React from 'react'
 import { assets } from '../../../assets/assets'
 import MiniHerosection from '../../../components/MiniHerosection'
 import { Link } from 'react-router-dom';
-import Cartcard from '../../../components/cards/Cartcard';
 import { MdArrowForward } from 'react-icons/md';
 import { formatterUtility } from '../../../utilities/formatterutility';
+import Cartcard from '../../../components/cards/Cartcard';
 
 const Cart = () => {
 
@@ -30,7 +30,6 @@ const Cart = () => {
               <p className='text-body_color font-[Montserrat]! font-medium! md:text-xl text-lg text-center'>Your cart is empty. <Link to="/shop" className='text-secondary font-semibold!'>Go back to shop.</Link></p>
             ) : (
               <div className="grid gap-6">
-                <Cartcard />
                 <Cartcard />
               </div>
             )
