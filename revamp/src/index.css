@@ -19,6 +19,9 @@
 .made-container {
   @apply w-[90%] mx-auto md:px-0
 }
+.no-scrollbar::-webkit-scrollbar {
+  @apply hidden;
+}
 .styled-scrollbar::-webkit-scrollbar {
   @apply lg:w-2 w-1 h-1;
 }

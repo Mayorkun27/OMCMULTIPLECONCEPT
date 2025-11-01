@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { FaBars, FaShoppingCart, FaUserAlt } from "react-icons/fa";
+import useCartStore from "../../store/cartStore";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
+  const cart = useCartStore((state) => state.cart);
+  const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   const isLoggedIn = false;
 
@@ -73,9 +76,9 @@ const NavBar = () => {
           <ul
             className={`${
               isOpen
-                ? "grid grid-cols-2 left-0 -z-1 w-full p-[5%] backdrop-blur-md bg-black/10"
+                ? `grid grid-cols-2 left-0 -z-1 w-full p-[5%] backdrop-blur-md rounded-xl overflow-hidden ${isScrolled ? "bg-black/40" : "bg-black/10"}`
                 : "hidden lg:flex"
-            } lg:static absolute lg:left-auto -left-[100dvh] top-12 transition-all duration-1000 items-center gap-8`}
+            } lg:static absolute lg:left-auto -left-[100dvh] top-14 transition-all duration-1000 items-center gap-8`}
           >
             {navLinks.map((link, index) => (
               <li key={index} onClick={() => setIsOpen(false)}>
@@ -92,9 +95,14 @@ const NavBar = () => {
               </li>
             ))}
           </ul>
-          <div className="flex items-center md:gap-8 gap-6">
-            <Link to="/cart" className="flex items-center gap-2 rounded-md">
+          <div className="flex items-center md:gap-8 gap-6 text-lg">
+            <Link to="/cart" className="flex items-center gap-2 rounded-md relative">
               <FaShoppingCart />
+              {cartItemCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-[10px] w-4 h-4 flex items-center justify-center">
+                  {cartItemCount}
+                </span>
+              )}
             </Link>
             {!isLoggedIn ? (
               <Link to="/login" className="flex items-center gap-2 rounded-md">
@@ -123,6 +131,18 @@ const NavBar = () => {
                     className="text-xs font-medium hover:bg-body_color/10 border-b border-body_color/70 last:border py-1"
                   >
                     My Orders
+                  </Link>
+                  <Link
+                    to="/admin/manageproducts"
+                    className="text-xs font-medium hover:bg-body_color/10 border-b border-body_color/70 last:border py-1"
+                  >
+                    Manage products
+                  </Link>
+                  <Link
+                    to="/admin/manageorders"
+                    className="text-xs font-medium hover:bg-body_color/10 border-b border-body_color/70 last:border py-1"
+                  >
+                    Manage orders
                   </Link>
                   <Link
                     to="/myorders"

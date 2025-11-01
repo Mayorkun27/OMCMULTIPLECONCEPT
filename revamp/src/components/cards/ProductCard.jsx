@@ -2,10 +2,20 @@ import React from 'react'
 import { formatterUtility } from '../../utilities/formatterutility'
 import { GoPlus } from "react-icons/go";
 import { Link } from 'react-router-dom'
+import useCartStore from '../../store/cartStore';
 
-const ProductCard = ({ id, name, description, price, image }) => {
+const ProductCard = (props) => {
+    const { id, name, description, price, image } = props;
+    const addToCart = useCartStore((state) => state.addToCart);
+
+    const handleAddToCart = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        addToCart(props);
+    }
+
     return (
-        <Link 
+        <Link
             to={`/shop/${id}`}
             className='lg:hover:bg-body_color/10 lg:bg-transparent bg-body_color/10 transition-all duration-300 rounded-xl group min-h-80 overflow-hidden flex flex-col items-start justify-center relative'
         >
@@ -18,10 +28,11 @@ const ProductCard = ({ id, name, description, price, image }) => {
                 <h3 className='font-bold! pt-2 text-xl font-[Montserrat]!'>{formatterUtility(Number(price))}</h3>
                 <button
                     type='button'
+                    onClick={handleAddToCart}
                     className='mt-6 w-full cursor-pointer text-primary border border-primary hover:bg-primary px-4 py-2 hover:text-white text-sm flex items-center justify-center gap-2 rounded-md transition-all duration-300'
                 >
                     <GoPlus size={20} />
-                    Order Now
+                    Add to Cart
                 </button>
             </div>
         </Link>

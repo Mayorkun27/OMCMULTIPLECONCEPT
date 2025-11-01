@@ -67,49 +67,49 @@ const Footer = () => {
               <Link
                 to={""}
                 className="text-dark hover:text-dark/70 transition-all duration-300"
-              ><a  href="#">Support</a></Link>
+              >Support</Link>
               <Link
                 to={""}
                 className="text-dark hover:text-dark/70 transition-all duration-300"
-              ><a  href="#">Knowledge base</a></Link>
+              >Knowledge base</Link>
               <Link
                 to={""}
                 className="text-dark hover:text-dark/70 transition-all duration-300"
-              ><a  href="#">Live chat</a></Link>
+              >Live chat</Link>
             </ul>
 
             <ul className="md:col-span-1 flex flex-col gap-4">
               <Link
                 to={""}
                 className="text-dark hover:text-dark/70 transition-all duration-300"
-              ><a  href="#">Jobs</a></Link>
+              >Jobs</Link>
               <Link
                 to={""}
                 className="text-dark hover:text-dark/70 transition-all duration-300"
-              ><a  href="#">Our team</a></Link>
+              >Our team</Link>
               <Link
                 to={""}
                 className="text-dark hover:text-dark/70 transition-all duration-300"
-              ><a  href="#">Leadership</a></Link>
+              >Leadership</Link>
               <Link
                 to={""}
                 className="text-dark hover:text-dark/70 transition-all duration-300"
-              ><a  href="#">Privacy Policy</a></Link>
+              >Privacy Policy</Link>
             </ul>
 
             <ul className="md:col-span-1 flex flex-col gap-4">
               <Link
                 to={""}
                 className="text-dark hover:text-dark/70 transition-all duration-300"
-              ><a  href="#">Supercoat Emulsion Paint</a></Link>
+              >Supercoat Emulsion Paint</Link>
               <Link
                 to={""}
                 className="text-dark hover:text-dark/70 transition-all duration-300"
-              ><a  href="#">Premium Emulsion Paint</a></Link>
+              >Premium Emulsion Paint</Link>
               <Link
                 to={""}
                 className="text-dark hover:text-dark/70 transition-all duration-300"
-              ><a  href="#">ExtraCoat Emulsion Paint</a></Link>
+              >ExtraCoat Emulsion Paint</Link>
             </ul>
 					</div>
 

@@ -41,10 +41,10 @@ const Login = () => {
             />
             <div className="made-container pt-20 lg:pb-20">
                 <div className="grid grid-cols-12 gap-y-8 md:gap-x-0 lg:gap-x-8">
-                    <div className='md:col-span-5 col-span-12 lg:max-h-[450px] md:max-h-[350px] max-h-80 w-full rounded-2xl overflow-hidden shadow-md relative'>
+                    <div className='md:col-span-5 col-span-12 lg:max-h-[450px] md:max-h-[350px] max-h-40 w-full rounded-2xl overflow-hidden shadow-md relative'>
                         <img src={assets.checkimg} alt="Wall painting" className='w-full h-full object-cover' />
                         <div className="absolute inset-0 lg:p-8 md:p-8 p-4 bg-linear-to-b from-black/0 to-black/80 bottom-0 z-9 flex flex-col justify-center">
-                            <h3 className='font-bold! tracking-wide md:text-6xl text-2xl drop-shadow-xl font-[Montserrat]! text-light'>Welcome Back.</h3>
+                            <h3 className='font-bold! tracking-wide md:text-6xl text-3xl drop-shadow-xl font-[Montserrat]! text-light'>Welcome Back.</h3>
                             {/* <div className="text-lighter space-y-2">
                                 <p>Reach out:</p>
                                 <div className="flex items-center gap-2">
@@ -68,7 +68,7 @@ const Login = () => {
                             </div> */}
                         </div>
                     </div>
-                    <form onSubmit={formik.handleSubmit} className='md:col-span-7 col-span-12 rounded-2xl bg-white shadow-md md:p-8 p-4 flex flex-col items-start justify-center gap-6'>
+                    <form onSubmit={formik.handleSubmit} className='md:col-span-7 col-span-12 rounded-2xl bg-white shadow-md md:p-8 p-6 flex flex-col items-start justify-center gap-6'>
                         <div className="flex flex-col gap-1 w-full">
                             <label className="font-[Montserrat]! font-medium!" htmlFor="email">Enter your Email Address</label>
                             <input 

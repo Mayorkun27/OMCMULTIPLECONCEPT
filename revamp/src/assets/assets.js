@@ -22,6 +22,8 @@ import newsimg4 from "./images/newsimg4.jpg";
 import checkimg from "./images/checkimg.jpg";
 import checkimg2 from "./images/checkimg2.jpg";
 import checkimg3 from "./images/checkimg3.jpg";
+import newsimg5 from "./images/newsimg5.jpg";
+import newsimg6 from "./images/newsimg6.jpg";
 
 export const assets = {
     logo,
@@ -48,4 +50,6 @@ export const assets = {
     checkimg,
     checkimg2,
     checkimg3,
+    newsimg5,
+    newsimg6,
 }

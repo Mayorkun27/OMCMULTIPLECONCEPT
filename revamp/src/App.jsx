@@ -11,12 +11,17 @@ import Cart from "./pages/client/shopsubpages/Cart";
 import Checkout from "./pages/client/shopsubpages/Checkout";
 import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
+import Order from "./pages/client/shopsubpages/Order";
+import ManageProduct from "./pages/admin/ManageProduct";
+import ManageOrder from "./pages/admin/ManageOrder";
+import AdminLayout from "./layout/AdminLayout";
+import AddProduct from "./pages/admin/AddProduct";
 
 function App() {
   
   return (
     <>
-      <Toaster />
+      <Toaster position="top-center" />
       <Routes>
         <Route 
           path="/"
@@ -33,6 +38,10 @@ function App() {
         <Route 
           path="/shop"
           element={<MainLayout children={<Shop />} />}
+        />
+        <Route 
+          path="/myorders"
+          element={<MainLayout children={<Order />} />}
         />
         <Route 
           path="/shop/:id"
@@ -57,6 +66,18 @@ function App() {
         <Route 
           path="/contactus"
           element={<MainLayout children={<Contact />} />}
+        />
+        <Route 
+          path="/admin/addproducts"
+          element={<AdminLayout children={<AddProduct />} pageName="Add Products" />}
+        />
+        <Route 
+          path="/admin/manageproducts"
+          element={<AdminLayout children={<ManageProduct />} pageName="Manage Products" />}
+        />
+        <Route 
+          path="/admin/manageorders"
+          element={<AdminLayout children={<ManageOrder />} pageName="Manage Orders" />}
         />
       </Routes>
     </>

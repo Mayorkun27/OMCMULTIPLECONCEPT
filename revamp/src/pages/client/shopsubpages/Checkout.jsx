@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import MiniHerosection from '../../../components/MiniHerosection'
 import { assets } from '../../../assets/assets'
 import { useFormik } from 'formik'
@@ -6,6 +6,10 @@ import * as Yup from "yup";
 import { MdArrowRightAlt } from 'react-icons/md';
 
 const Checkout = () => {
+  useEffect(() => {
+    window.scroll(0, 0)
+  }, [])
+
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -42,6 +46,7 @@ const Checkout = () => {
 
     }
   })
+  
   return (
     <div>
       <MiniHerosection

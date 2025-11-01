@@ -11,37 +11,43 @@ const Shop = () => {
 
   const products = [
     {
-      name: "Supercoat Emulsion Paint",
+      id: 1,
+      name: "Supercoat Emulsion 1",
       description: "Suitable as a finishing coat for interior/exterior concrete plaster or cement rendered surfaces to give a highly granular, attractive finish",
       price: 300000,
       image: assets.product1
     },
     {
-      name: "Supercoat Emulsion Paint",
+      id: 2,
+      name: "Supercoat Emulsion 2",
       description: "Suitable as a finishing coat for interior/exterior concrete plaster or cement rendered surfaces to give a highly granular, attractive finish",
       price: 300000,
       image: assets.product1
     },
     {
-      name: "Supercoat Emulsion Paint",
+      id: 3,
+      name: "Supercoat Emulsion 3",
       description: "Suitable as a finishing coat for interior/exterior concrete plaster or cement rendered surfaces to give a highly granular, attractive finish",
       price: 300000,
       image: assets.product1
     },
     {
-      name: "Supercoat Emulsion Paint",
+      id: 4,
+      name: "Supercoat Emulsion 4",
       description: "Suitable as a finishing coat for interior/exterior concrete plaster or cement rendered surfaces to give a highly granular, attractive finish",
       price: 300000,
       image: assets.product1
     },
     {
-      name: "Supercoat Emulsion Paint",
+      id: 5,
+      name: "Supercoat Emulsion 5",
       description: "Suitable as a finishing coat for interior/exterior concrete plaster or cement rendered surfaces to give a highly granular, attractive finish",
       price: 300000,
       image: assets.product1
     },
     {
-      name: "Supercoat Emulsion Paint",
+      id: 6,
+      name: "Supercoat Emulsion 6",
       description: "Suitable as a finishing coat for interior/exterior concrete plaster or cement rendered surfaces to give a highly granular, attractive finish",
       price: 300000,
       image: assets.product1
@@ -62,9 +68,10 @@ const Shop = () => {
       <div className="made-container pt-20 lg:pb-20 md:pb-">
         <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-6">
           {
-            products.map((product, index) => (
+            products.map((product) => (
               <ProductCard 
-                key={index+1}
+                key={product.id}
+                id={product.id}
                 name={product.name}
                 description={product.description}
                 price={product.price}

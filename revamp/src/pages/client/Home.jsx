@@ -96,10 +96,10 @@ const Home = () => {
         }}
       >
         <div className="made-container h-full flex lg:gap-0 gap-6 items-center relative z-2">
-          <div className="lg:w-1/2 md:w-3/4 flex flex-col gap-6 text-lighter col-span-1">
-            <h3 className='font-bold md:text-4xl text-[32px] md:leading-none leading-8'>ONIPTTECH MULTIPLE CONCEPT</h3>
-            <p className='leading-7 text-sm text-white/50'>At ONIPTTECH MULTIPLE CONCEPT, We bring colors to life! As a leading paint production company, we specialize in crafting high-quality paints and interior decoration solutions that transform spaces into stunning works of art.</p>
-            <div className="flex items-center gap-4">
+          <div className="w-full mx-auto text-center flex flex-col gap-6 text-lighter col-span-1">
+            <h3 className='font-medium! md:text-5xl text-[38px] md:leading-none leading-10 capitalize'>onipttech multiple concept</h3>
+            <p className='leading-7 md:text-sm text-xs text-white/50 lg:w-1/2 md:w-3/4 mx-auto'>At ONIPTTECH MULTIPLE CONCEPT, We bring colors to life! As a leading paint production company, we specialize in crafting high-quality paints and interior decoration solutions that transform spaces into stunning works of art.</p>
+            <div className="flex items-center justify-center gap-4">
               <Link
                 to={"/shop"}
                 className='px-6 py-2 bg-secondary rounded-full text-dark font-semibold'

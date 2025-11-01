@@ -7,9 +7,9 @@ const MiniHerosection = ({ title, subText, bgStyle }) => {
       style={bgStyle}
     >
         <div className="made-container h-full flex lg:gap-0 gap-6 items-center relative z-2">
-            <div className="lg:w-[45%] md:w-3/4 flex flex-col gap-6 text-lighter">
+            <div className="w-full mx-auto text-center flex flex-col gap-2 text-lighter">
                 <h3 className='font-bold! md:text-4xl text-[32px] md:leading-none leading-8 font-[Montserrat]!'>{title}</h3>
-                <p className='leading-7 text-sm text-white/50 w-11/12'>{subText}</p>
+                <p className='leading-7 md:text-sm text-xs text-white/50 md:w-3/4 mx-auto'>{subText}</p>
             </div>
         </div>
     </div>
