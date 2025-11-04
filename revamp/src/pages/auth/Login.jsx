@@ -3,9 +3,12 @@ import MiniHerosection from '../../components/MiniHerosection'
 import { assets } from '../../assets/assets'
 import { useFormik } from 'formik'
 import * as Yup from "yup";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import useAuthStore from '../../store/authStore';
 
 const Login = () => {
+    const { login } = useAuthStore();
+    const navigate = useNavigate();
 
     useEffect(() => {
         window.scroll(0, 0)
@@ -24,7 +27,10 @@ const Login = () => {
                 .required("Password is required"),
         }),
         onSubmit: async (values) => {
-            console.log(values)
+            const success = await login(values.email, values.password);
+            if (success) {
+                navigate('/');
+            }
         }
     })
 
