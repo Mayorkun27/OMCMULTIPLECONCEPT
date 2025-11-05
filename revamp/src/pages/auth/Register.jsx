@@ -12,18 +12,24 @@ const Register = () => {
         
     const formik = useFormik({
         initialValues: {
+            name: "",
             email: "",
+            phone: "",
             password: "",
-            confirmPasssword: "",
+            password_confirmation: "",
         },
         validationSchema: Yup.object({
+            name: Yup.string()
+                .required("Name is required"),
             email: Yup.string()
                 .email("Invalid email address")
                 .required("Email Address is required"),
+            phone: Yup.string()
+                .required("Phone is required"),
             password: Yup.string()
                 .min(8, "Password must be atleast 8 characters")
                 .required("Password is required"),
-            confirmPasssword: Yup.string()
+            password_confirmation: Yup.string()
                 .required("Password confirmation is required")
                 .oneOf([Yup.ref('password'), null], "Passwords are not the same"),
         }),
@@ -53,31 +59,18 @@ const Register = () => {
                             </div>
                         </div>
                         <form onSubmit={formik.handleSubmit} className='md:col-span-7 col-span-12 grid md:grid-cols-2 grid-cols-1 rounded-2xl bg-white shadow-md md:p-8 p-6 items-center justify-center gap-x-4 gap-y-6'>
-                            <div className="flex flex-col gap-1 w-full">
-                                <label className="font-[Montserrat]! font-medium!" htmlFor="firstName">Enter your First name</label>
+                            <div className="flex flex-col gap-1 w-full md:col-span-2">
+                                <label className="font-[Montserrat]! font-medium!" htmlFor="name">Enter your name</label>
                                 <input 
-                                    type="firstName" 
-                                    name="firstName" 
-                                    id="firstName"
-                                    autoComplete='firstName'
+                                    type="name" 
+                                    name="name" 
+                                    id="name"
+                                    autoComplete='name'
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     className='border border-primary indent-2 rounded-md outline-0 py-2'
                                 />
-                                {formik.touched.firstName && formik.errors.firstName && (<p className='text-red-600 text-sm'>{formik.errors.firstName}</p>)}
-                            </div>
-                            <div className="flex flex-col gap-1 w-full">
-                                <label className="font-[Montserrat]! font-medium!" htmlFor="lastName">Enter your last name</label>
-                                <input 
-                                    type="lastName" 
-                                    name="lastName" 
-                                    id="lastName"
-                                    autoComplete='lastName'
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    className='border border-primary indent-2 rounded-md outline-0 py-2'
-                                />
-                                {formik.touched.lastName && formik.errors.lastName && (<p className='text-red-600 text-sm'>{formik.errors.lastName}</p>)}
+                                {formik.touched.name && formik.errors.name && (<p className='text-red-600 text-sm'>{formik.errors.name}</p>)}
                             </div>
                             <div className="flex flex-col gap-1 w-full md:col-span-2">
                                 <label className="font-[Montserrat]! font-medium!" htmlFor="email">Enter your Email Address</label>
@@ -106,17 +99,17 @@ const Register = () => {
                                 {formik.touched.password && formik.errors.password && (<p className='text-red-600 text-sm'>{formik.errors.password}</p>)}
                             </div>
                             <div className="flex flex-col gap-1 w-full">
-                                <label className="font-[Montserrat]! font-medium!" htmlFor="confirmPasssword">Enter your Passsword again</label>
+                                <label className="font-[Montserrat]! font-medium!" htmlFor="password_confirmation">Enter your Passsword again</label>
                                 <input 
                                     type="password" 
-                                    name="confirmPasssword" 
-                                    id="confirmPasssword"
+                                    name="password_confirmation" 
+                                    id="password_confirmation"
                                     autoComplete='current-password'
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     className='border border-primary indent-2 rounded-md outline-0 py-2'
                                 />
-                                {formik.touched.confirmPasssword && formik.errors.confirmPasssword && (<p className='text-red-600 text-sm'>{formik.errors.confirmPasssword}</p>)}
+                                {formik.touched.password_confirmation && formik.errors.password_confirmation && (<p className='text-red-600 text-sm'>{formik.errors.password_confirmation}</p>)}
                             </div>
                             <button
                                 type="submit"
