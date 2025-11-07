@@ -84,31 +84,35 @@
   @apply bg-primary
 }
 
+.selected-color {
+  -webkit-text-stroke: .5px #00000046;
+  letter-spacing: 2px;
+}
 
 
-          /* The animation keyframes move the inner container by exactly 50% of its own width.
-          Since the content is duplicated (Content A + Content B), 50% of the total width
-          is exactly the width of the original Content A.
-          This move smoothly transitions from the end of Content A to the start of Content B.
-          The 'infinite' animation then instantly resets to the start (0%), creating the seamless loop. */
-        
-        
-        @keyframes marquee-scroll {
-          from {
-            transform: translateX(0);
-          }
-          to {
-            transform: translateX(-50%);
-          }
-        }
+  /* The animation keyframes move the inner container by exactly 50% of its own width.
+  Since the content is duplicated (Content A + Content B), 50% of the total width
+  is exactly the width of the original Content A.
+  This move smoothly transitions from the end of Content A to the start of Content B.
+  The 'infinite' animation then instantly resets to the start (0%), creating the seamless loop. */
 
-        /* TestimonialSliderlying the animation */
-        .marquee-inner {
-          animation: marquee-scroll 50s linear infinite;
-        }
-        
-        /* Optional: Pause animation on hover */
-        .marquee-inner:hover {
-          animation-play-state: paused;
-        }
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* TestimonialSliderlying the animation */
+.marquee-inner {
+  animation: marquee-scroll 50s linear infinite;
+}
+
+/* Optional: Pause animation on hover */
+.marquee-inner:hover {
+  animation-play-state: paused;
+}
       

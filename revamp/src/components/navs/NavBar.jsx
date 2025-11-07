@@ -2,15 +2,21 @@ import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { FaBars, FaShoppingCart, FaUserAlt } from "react-icons/fa";
 import useCartStore from "../../store/cartStore";
+import useAuthStore from "../../store/authStore";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
-  const cart = useCartStore((state) => state.cart);
-  const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
+  const { user, token, logout } = useAuthStore();
+  const { cart, fetchCart } = useCartStore();
+  const cartItemCount = Array.isArray(cart) ? cart.reduce((total, item) => total + item.quantity, 0) : 0;
 
-  const isLoggedIn = false;
+  const isLoggedIn = token !== null;
+
+  useEffect(() => {
+    fetchCart();
+  }, [fetchCart]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,10 +47,10 @@ const NavBar = () => {
       name: "About Us",
       path: "/aboutus",
     },
-    {
-      name: "Blog",
-      path: "/blog",
-    },
+    // {
+    //   name: "Blog",
+    //   path: "/blog",
+    // },
     {
       name: "Contact Us",
       path: "/contactus",
@@ -108,11 +114,15 @@ const NavBar = () => {
               <Link to="/login" className="flex items-center gap-2 rounded-md">
                 <FaUserAlt />
               </Link>
+            ) : isLoggedIn && user?.role === "admin" ? (
+              <Link to="/admin/addproducts" className="flex items-center gap-2 rounded-md">
+                <FaUserAlt />
+              </Link>
             ) : (
-              <button
+              <div
                 type="button"
                 onClick={() => setShowOptions(prev => !prev)}
-                className="flex items-center gap-2 rounded-md"
+                className="flex items-center text-center gap-2 rounded-md"
               >
                 <FaUserAlt />
                 <div
@@ -126,32 +136,26 @@ const NavBar = () => {
                             : "hidden"
                     } flex flex-col`}
                 >
-                  <Link
+                  {/* <Link
                     to="/myorders"
                     className="text-xs font-medium hover:bg-body_color/10 border-b border-body_color/70 last:border py-1"
                   >
                     My Orders
                   </Link>
                   <Link
-                    to="/admin/manageproducts"
+                    to=""
                     className="text-xs font-medium hover:bg-body_color/10 border-b border-body_color/70 last:border py-1"
                   >
-                    Manage products
-                  </Link>
-                  <Link
-                    to="/admin/manageorders"
-                    className="text-xs font-medium hover:bg-body_color/10 border-b border-body_color/70 last:border py-1"
-                  >
-                    Manage orders
-                  </Link>
-                  <Link
-                    to="/myorders"
-                    className="text-xs font-medium hover:bg-body_color/10 border-b border-body_color/70 last:border-b-0 py-1"
+                    Profile
+                  </Link> */}
+                  <button
+                    onClick={logout}
+                    className="cursor-pointer text-xs font-medium hover:bg-body_color/10 border-b border-body_color/70 last:border-b-0 py-1"
                   >
                     Logout
-                  </Link>
+                  </button>
                 </div>
-              </button>
+              </div>
             )}
           </div>
         </div>

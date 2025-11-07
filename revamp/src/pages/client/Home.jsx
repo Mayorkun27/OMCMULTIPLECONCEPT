@@ -1,22 +1,49 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { assets } from '../../assets/assets'
 import { Link } from 'react-router-dom'
 import ProductCard from '../../components/cards/ProductCard';
+import ProductCardSkeleton from '../../components/cards/ProductCardSkeleton';
 import { RiTruckLine } from "react-icons/ri";
 import { LuShoppingBag } from "react-icons/lu";
 import { CgSupport } from "react-icons/cg";
 import { PiArrowsClockwiseLight } from "react-icons/pi";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, A11y, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import TestimonialSlider from '../../components/sections/TestimonialSlider';
+import api from '../../api';
+import { toast } from 'sonner';
 
 const Home = () => {
 
+  const [products, setProducts] = useState([])
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     window.scroll(0, 0)
+    document.title = "Home - OMC Multitech Limited";
+  }, [])
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setIsLoading(true)
+      try {
+        const response = await api.call('/products', "GET");
+        console.log(response);
+        if (response.status === 200) {
+          const { data, current_page, last_page } = response.data.data;
+          setProducts(data);
+        }
+      } catch (error) {
+        console.error('An error occurred fetching products', error);
+        toast.error('An error occurred fetching products');
+      } finally {
+        setTimeout(() => {
+          setIsLoading(false)
+        }, 2000);
+      }
+    }
+    fetchProducts()
   }, [])
 
   const whys = [
@@ -131,30 +158,40 @@ const Home = () => {
           </Link>
         </div>
         <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-6">
-          <ProductCard 
+          {
+            isLoading ? (
+              Array(4).fill(0).map((_, index) => (
+                <ProductCardSkeleton key={index} />
+              ))
+            ) : products.length > 1 && (
+              products.slice(0, 4).map((product, index) => (
+              <ProductCard 
+                key={product.id+index}
+                {...product}
+              />
+            ))
+          )}
+          {/* <ProductCard 
+            id="2"
             name="OMC Emulsion Paint"
             description="Suitable as a finishing coat for interior/exterior concrete plaster or cement rendered surfaces to give a highly granular, attractive finish"
             price="100000"
             image={assets.product1}
           />
           <ProductCard 
+            id="3"
             name="OMC Emulsion Paint"
             description="Suitable as a finishing coat for interior/exterior concrete plaster or cement rendered surfaces to give a highly granular, attractive finish"
             price="100000"
             image={assets.product1}
           />
           <ProductCard 
+            id="4"
             name="OMC Emulsion Paint"
             description="Suitable as a finishing coat for interior/exterior concrete plaster or cement rendered surfaces to give a highly granular, attractive finish"
             price="100000"
             image={assets.product1}
-          />
-          <ProductCard 
-            name="OMC Emulsion Paint"
-            description="Suitable as a finishing coat for interior/exterior concrete plaster or cement rendered surfaces to give a highly granular, attractive finish"
-            price="100000"
-            image={assets.product1}
-          />
+          /> */}
         </div>
         <div className="md:hidden block">
           <Link
@@ -268,7 +305,7 @@ const Home = () => {
         <TestimonialSlider />
       </div>
       {/* blog */}
-      <div className="made-container lg:pb-20">
+      <div hidden className="made-container lg:pb-20">
         <div className='flex items-center justify-between mb-8'>
           <h3 className='lg:text-3xl md:text-2xl text-3xl font-medium! text-center font-[Montserrat]!'>Recent Blog</h3>
           <Link className='underline'>View All Posts</Link>

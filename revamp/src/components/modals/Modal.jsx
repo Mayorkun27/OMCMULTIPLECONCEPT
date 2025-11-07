@@ -12,7 +12,7 @@ const Modal = ({ children, onClose }) => {
 
     return ReactDOM.createPortal(
         <div className="fixed inset-0 bg-black/80 z-[9999] flex items-center justify-center p-4">
-            <div className="bg-white md:p-8 p-4 lg:w-1/2 md:w-3/4 w-full rounded-lg relative">
+            <div className="bg-white md:p-8 p-4 lg:w-1/2 md:w-3/4 w-full rounded-xl relative lg:max-h-[70dvh] md:max-h-[50dvh] max-h-[80dvh] overflow-y-auto styled-scrollbar">
                 <button
                     onClick={onClose}
                     type='button'

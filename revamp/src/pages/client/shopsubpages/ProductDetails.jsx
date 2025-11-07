@@ -4,63 +4,114 @@ import MiniHerosection from '../../../components/MiniHerosection';
 import { assets } from '../../../assets/assets';
 import { formatterUtility } from '../../../utilities/formatterutility';
 import { MdOutlineAddShoppingCart } from "react-icons/md";
-import { GoPlus } from "react-icons/go";
-import { HiOutlineMinusSmall } from "react-icons/hi2";
+import { toast } from 'sonner';
+import api from '../../../api';
+import useCartStore from '../../../store/cartStore'; // Import useCartStore
 
 const ProductDetails = () => {
     const { id } = useParams();
-    const [availableColors, setAvailableColors] = useState([
-        "#9575CD",
-        "#FFC107",
-        "#3F51B5",
-        "#009688",
-        "#E91E63",
-        "#2196F3",
-        "#F44336",
-        "#8BC34A",
-    ])
     const [selectedColor, setSelectedColor] = useState("")
+    const [productDetails, setProductDetails] = useState(null)
+    const [loadingProductDetails, setloadingProductDetails] = useState(false)
+
+    // Access cart state and actions
+    const { addToCart, addingProductId } = useCartStore();
+
+    const isAddingToCart = addingProductId === productDetails?.id;
 
     useEffect(() => {
         window.scroll(0, 0)
+        document.title = "Product Details - OMC Multitech Limited";
     }, [])
+
+    useEffect(() => {
+        const fetchProductDetails = async () => {
+            setloadingProductDetails(true)
+            try {
+                const response = await api.call(`/products/${id}`, "GET");
+                if (response.status === 200) {
+                    setProductDetails(response.data.data);
+                }
+            } catch (error) {
+                console.error('An error occurred fetching products details', error);
+                toast.error('An error occurred fetching products details');
+            } finally {
+                setloadingProductDetails(false)
+            }
+        }
+        fetchProductDetails()
+    }, [id])
 
     const images = [assets.newsimg1, assets.newsimg2, assets.newsimg3, assets.newsimg4, assets.heroimg, assets.heroimg2, assets.heroimg3]
     const randomIndex = Math.floor(Math.random() * images.length)
 
+    const handleAddToCart = () => {
+        // if (!selectedColor) {
+        //     toast.error('Please Available colors first.');
+        //     return;
+        // }
+        if (productDetails) {
+            addToCart({ ...productDetails, selectedColor });
+        }
+    };
+
+    const getContrastColor = (hexColor) => {
+        if (!hexColor) return '#FFFFFF';
+
+        let hex = hexColor.replace('#', '');
+
+        if (hex.length === 3) {
+            hex = hex.split('').map(char => char + char).join('');
+        }
+
+        if (hex.length !== 6) {
+            return '#FFFFFF'; // Default to white on invalid hex
+        }
+
+        const r = parseInt(hex.substring(0, 2), 16);
+        const g = parseInt(hex.substring(2, 4), 16);
+        const b = parseInt(hex.substring(4, 6), 16);
+
+        const luminance = (0.299 * r + 0.587 * g + 0.114 * b);
+
+        return luminance > 149 ? '#000000' : '#FFFFFF';
+    };
+
+    const buttonTextColor = selectedColor ? getContrastColor(selectedColor) : '#FFFFFF';
+
     return (
         <div>
             <MiniHerosection
-                title={"Supercoat Emulsion Paint"}
-                subText={"Suitable as a finishing coat for interior/exterior concrete plaster or cement rendered surfaces to give a highly granular, attractive finish."}
+                title={productDetails?.name}
+                subText={productDetails?.description}
                 bgStyle={{
-                    background: `linear-gradient(135deg, #000000ba, #000000ba), url(${images[randomIndex]})`,
+                    backgroundImage: `linear-gradient(135deg, #000000ba, #000000ba), url(${images[randomIndex]})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                 }}
             />
             <div className="made-container pt-20 lg:pb-20">
-                <div className="bg-white md:p-8 p-4 rounded-2xl grid md:grid-cols-3 items-center gap-8">
-                    <div className="">
-                        <img src={assets.product1} alt="Supercoat Emulsion Paint" className='w-full h-full object-cover' />
+                <div className="bg-white md:p-8 p-4 rounded-2xl grid lg:grid-cols-3 md:grid-cols-4 items-center gap-8">
+                    <div className="rounded-xl overflow-hidden h-[400px] lg:col-span-1 md:col-span-2">
+                        <img src={productDetails?.image} alt={productDetails?.name} className='w-full h-full object-cover' />
                     </div>
                     <div className="md:col-span-2">
-                        <h3 className='font-[Montserrat]! font-semibold! text-3xl'>Supercoat Emulsion Paint</h3>
-                        <p className='text-body_color my-2 text-base font-medium!'>Suitable as a finishing coat for interior/exterior concrete plaster or cement rendered surfaces to give a highly granular, attractive finish.</p>
-                        <h3 className='font-[Montserrat]! font-semibold! text-2xl my-5'>{formatterUtility(Number(36504.69))}</h3>
-                        <p className='text-lg font-medium!'><span className="text-body_color">Size:</span> 4 Liters</p>
+                        <h3 className='font-[Montserrat]! font-semibold! text-3xl'>{productDetails?.name}</h3>
+                        <p className='text-body_color my-2 text-base font-medium!'>{productDetails?.description}</p>
+                        <h3 className='font-[Montserrat]! font-semibold! text-2xl my-5'>{formatterUtility(Number(productDetails?.price))}</h3>
+                        <p className='text-lg font-medium!'><span className="text-body_color">Size:</span> {productDetails?.size} Liters</p>
                         <div className="lg:block hidden">
                             <div className="space-y-4 mt-3 text-body_color">
-                                <p>Select a color: <span className='font-bold! font-[Montserrat]!' style={{ color: selectedColor }}>{selectedColor}</span></p>
+                                <p>Available colors: <span className='font-bold! font-[Montserrat]! text-shadow-sm selected-color' style={{ color: selectedColor }}>{selectedColor}</span></p>
                                 <div className="flex flex-wrap items-center gap-4">
                                     {
-                                        availableColors.map((color, index) => (
+                                        productDetails?.color && JSON.parse(productDetails?.color).map((c, index) => (
                                             <div 
                                                 key={index} 
-                                                className={`w-8 h-8 cursor-pointer ${selectedColor === color && "border-6 border-light rounded-full"}`}
-                                                onClick={() => setSelectedColor(color)}
+                                                className={`w-8 h-8 cursor-pointer border border-black/20 ${selectedColor === c && "border-6 border-light rounded-full"}`}
+                                                onClick={() => setSelectedColor(c)}
                                                 style={{
-                                                    backgroundColor: color,
+                                                    backgroundColor: c,
                                                 }}
                                             ></div>
                                         ))
@@ -68,51 +119,38 @@ const ProductDetails = () => {
                                 </div>
                             </div>
                             <div className="flex items-end gap-6 mt-8">
-                                <div className="flex flex-col gap-1">
-                                    <p className='text-body_color'>Quantity:</p>
-                                    <div className="flex items-center border border-primary/50 rounded-md overflow-hidden">
-                                        <button
-                                            type='button'
-                                            className='w-14 h-10 flex items-center justify-center border-0 cursor-pointer bg-black/70 disabled:cursor-not-allowed disabled:opacity-50 text-white text-2xl'
-                                        >
-                                            <HiOutlineMinusSmall />
-                                        </button>
-                                        <span
-                                            className='w-14 h-10 flex items-center justify-center'
-                                        >2</span>
-                                        <button
-                                            type='button'
-                                            className='w-14 h-10 flex items-center justify-center border-0 cursor-pointer bg-black/70 disabled:cursor-not-allowed disabled:opacity-50 text-white text-2xl'
-                                        >
-                                            <GoPlus />
-                                        </button>
-                                    </div>
-                                </div>
                                 <button
                                     type='button'
-                                    className='w-full cursor-pointer text-white font-bold! hover:bg-primary px-4 h-10 hover:text-white text-sm flex items-center justify-center gap-2 rounded-md transition-all duration-300'
+                                    onClick={handleAddToCart}
+                                    disabled={isAddingToCart || loadingProductDetails}
+                                    className='w-full cursor-pointer font-bold! hover:bg-primary px-4 h-10 text-sm flex items-center justify-center gap-2 rounded-md transition-all duration-300'
                                     style={{
-                                        backgroundColor: selectedColor ? selectedColor : "#3b5d50"
+                                        backgroundColor: selectedColor ? selectedColor : "#3b5d50",
+                                        color: buttonTextColor
                                     }}
                                 >
-                                    <MdOutlineAddShoppingCart size={20} />
-                                    Add to Cart
+                                    {isAddingToCart ? (
+                                        <div className='w-4 h-4 border-2 rounded-full border-white border-t-transparent animate-spin'></div>
+                                    ) : (
+                                        <MdOutlineAddShoppingCart size={20} />
+                                    )}
+                                    {isAddingToCart ? 'Adding...' : 'Add to Cart'}
                                 </button>
                             </div>
                         </div>
                     </div>
                     <div className="md:col-span-3 lg:hidden block">
                         <div className="space-y-4 mt-3 text-body_color">
-                            <p>Select a color: <span className='font-bold! font-[Montserrat]!' style={{ color: selectedColor }}>{selectedColor}</span></p>
+                            <p>Available colors: <span className='font-bold! font-[Montserrat]! text-shadow-sm selected-color' style={{ color: selectedColor }}>{selectedColor}</span></p>
                             <div className="flex flex-wrap items-center gap-4">
                                 {
-                                    availableColors.map((color, index) => (
+                                    productDetails?.color && JSON.parse(productDetails?.color).map((c, index) => (
                                         <div 
                                             key={index} 
-                                            className={`w-8 h-8 cursor-pointer ${selectedColor === color && "border-6 border-light rounded-full"}`}
-                                            onClick={() => setSelectedColor(color)}
+                                            className={`w-8 h-8 cursor-pointer border border-black/20 ${selectedColor === c && "border-4 border-light rounded-full"}`}
+                                            onClick={() => setSelectedColor(c)}
                                             style={{
-                                                backgroundColor: color,
+                                                backgroundColor: c,
                                             }}
                                         ></div>
                                     ))
@@ -120,35 +158,22 @@ const ProductDetails = () => {
                             </div>
                         </div>
                         <div className="flex md:flex-row flex-col md:items-end items-start gap-6 mt-8">
-                            <div className="flex flex-col gap-1">
-                                <p className='text-body_color'>Quantity:</p>
-                                <div className="flex items-center border border-primary/50 rounded-md overflow-hidden">
-                                    <button
-                                        type='button'
-                                        className='w-14 h-10 flex items-center justify-center border-0 cursor-pointer bg-black/70 disabled:cursor-not-allowed disabled:opacity-50 text-white text-2xl'
-                                    >
-                                        <HiOutlineMinusSmall />
-                                    </button>
-                                    <span
-                                        className='w-14 h-10 flex items-center justify-center'
-                                    >2</span>
-                                    <button
-                                        type='button'
-                                        className='w-14 h-10 flex items-center justify-center border-0 cursor-pointer bg-black/70 disabled:cursor-not-allowed disabled:opacity-50 text-white text-2xl'
-                                    >
-                                        <GoPlus />
-                                    </button>
-                                </div>
-                            </div>
                             <button
                                 type='button'
-                                className='w-full cursor-pointer text-white font-bold! hover:bg-primary px-4 h-10 hover:text-white text-sm flex items-center justify-center gap-2 rounded-md transition-all duration-300'
+                                onClick={handleAddToCart}
+                                disabled={isAddingToCart || loadingProductDetails}
+                                className='w-full cursor-pointer font-bold! hover:bg-primary px-4 h-10 text-sm flex items-center justify-center gap-2 rounded-md transition-all duration-300'
                                 style={{
-                                    backgroundColor: selectedColor ? selectedColor : "#3b5d50"
+                                    backgroundColor: selectedColor ? selectedColor : "#3b5d50",
+                                    color: buttonTextColor
                                 }}
                             >
-                                <MdOutlineAddShoppingCart size={20} />
-                                Add to Cart
+                                {isAddingToCart ? (
+                                    <div className='w-4 h-4 border-2 rounded-full border-white border-t-transparent animate-spin'></div>
+                                ) : (
+                                    <MdOutlineAddShoppingCart size={20} />
+                                )}
+                                {isAddingToCart ? 'Adding...' : 'Add to Cart'}
                             </button>
                         </div>
                     </div>
