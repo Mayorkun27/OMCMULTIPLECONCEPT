@@ -61,7 +61,7 @@ const ProductDetails = () => {
         let hex = hexColor.replace('#', '');
 
         if (hex.length === 3) {
-            hex = hex.split('').map(char => char + char).join('');
+            hex = hex.split('')?.map(char => char + char).join('');
         }
 
         if (hex.length !== 6) {
@@ -105,7 +105,7 @@ const ProductDetails = () => {
                                 <p>Available colors: <span className='font-bold! font-[Montserrat]! text-shadow-sm selected-color' style={{ color: selectedColor }}>{selectedColor}</span></p>
                                 <div className="flex flex-wrap items-center gap-4">
                                     {
-                                        productDetails?.color && JSON.parse(productDetails?.color).map((c, index) => (
+                                        productDetails?.color && JSON.parse(productDetails?.color)?.map((c, index) => (
                                             <div 
                                                 key={index} 
                                                 className={`w-8 h-8 cursor-pointer border border-black/20 ${selectedColor === c && "border-6 border-light rounded-full"}`}
@@ -144,7 +144,7 @@ const ProductDetails = () => {
                             <p>Available colors: <span className='font-bold! font-[Montserrat]! text-shadow-sm selected-color' style={{ color: selectedColor }}>{selectedColor}</span></p>
                             <div className="flex flex-wrap items-center gap-4">
                                 {
-                                    productDetails?.color && JSON.parse(productDetails?.color).map((c, index) => (
+                                    productDetails?.color && JSON.parse(productDetails?.color)?.map((c, index) => (
                                         <div 
                                             key={index} 
                                             className={`w-8 h-8 cursor-pointer border border-black/20 ${selectedColor === c && "border-4 border-light rounded-full"}`}
