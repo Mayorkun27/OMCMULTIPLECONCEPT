@@ -15,7 +15,7 @@ const useCartStore = create(
           set({ cart: response.data.data.data });
         } catch (error) {
           console.error('Failed to fetch cart:', error);
-          toast.error(error?.response?.data?.message || error?.message || 'Failed to fetch cart');
+          toast.error(error?.response.data.message || error?.message || 'Failed to fetch cart');
         }
       },
       addToCart: async (product) => {

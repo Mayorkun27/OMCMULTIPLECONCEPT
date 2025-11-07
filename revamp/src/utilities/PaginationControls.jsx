@@ -62,7 +62,7 @@ const PaginationControls = ({ currentPage, totalPages, setCurrentPage }) => {
     }
 
     return (
-        <div className="flex justify-center items-center gap-1">
+        <div className="flex justify-center items-center gap-2">
             <button
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
@@ -70,7 +70,7 @@ const PaginationControls = ({ currentPage, totalPages, setCurrentPage }) => {
             >
                 <MdKeyboardArrowLeft />
             </button>
-            <span className="font-medium flex items-center gap-1">
+            <span className="font-medium flex items-center gap-2">
                 {displayedPageNumbers.map((page, index) =>
                     page === "..." ? (
                         <span

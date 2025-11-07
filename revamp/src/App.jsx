@@ -9,6 +9,7 @@ import Contact from "./pages/client/Contact";
 import ProductDetails from "./pages/client/shopsubpages/ProductDetails";
 import Cart from "./pages/client/shopsubpages/Cart";
 import Checkout from "./pages/client/shopsubpages/Checkout";
+import CheckoutSuccess from "./pages/client/shopsubpages/CheckoutSuccess";
 import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
 import Order from "./pages/client/shopsubpages/Order";
@@ -62,6 +63,10 @@ function App() {
         <Route 
           path="/checkout"
           element={<MainLayout children={<Checkout />} />}
+        />
+        <Route 
+          path="/checkout/success"
+          element={<CheckoutSuccess />}
         />
         <Route 
           path="/contactus"

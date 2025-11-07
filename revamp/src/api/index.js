@@ -43,7 +43,7 @@ const api = {
       return response;
     } catch (error) {
       console.error('API call error:', error);
-      throw error.response?.data?.message || 'API call failed';
+      throw error.response?.data?.message || error?.message || 'API call failed';
     }
   },
 };

@@ -11,106 +11,65 @@ const Footer = () => {
 			<div className="made-container relative">
         
 
-				<div className="grid lg:grid-cols-3 grid-cols-1 gap-8 text-sm items-center mb-10">
-					<div className="lg:col-span-1 lg:w-full md:w-3/5 flex flex-col md:gap-6 gap-4">
+				<div className="grid lg:grid-cols-5 grid-cols-1 md:gap-8 gap-12 text-sm items-start mb-10">
+					<div className="lg:col-span-2 lg:w-full md:w-3/5 flex flex-col md:gap-6 gap-4">
             <Link
               to={"#"}
               className="font-[Montserrat]! lg:text-3xl md:text-4xl text-3xl lg:leading-8 leading-10 font-medium! text-primary hover:text-dark/70 transition-all duration-300"
             >ONIPTTECH MULTIPLE CONCEPT<span>.</span></Link>
 						<p className="leading-7 text-body_color">At ONIPTTECH MULTIPLE CONCEPT, We bring colors to life! As a leading paint production company, we specialize in crafting high-quality paints and interior decoration solutions that transform spaces into stunning works of art.</p>
-
-						<ul className="flex items-center gap-4">
-							<Link
-                to={"#"}
-                className="w-10 h-10 flex items-center justify-center bg-light hover:bg-primary rounded-full text-dark text-lg hover:text-white transition-all duration-300"
-              >
-                <FaFacebook />
-              </Link>
-							<Link
-                to={""}
-                className="w-10 h-10 flex items-center justify-center bg-light hover:bg-primary rounded-full text-dark text-lg hover:text-white transition-all duration-300"
-              >
-                <FaTwitter />
-              </Link>
-							<Link
-                to={"https://www.instagram.com/oniptechmultipleconcept"}
-                className="w-10 h-10 flex items-center justify-center bg-light hover:bg-primary rounded-full text-dark text-lg hover:text-white transition-all duration-300"
-              >
-                <FaInstagram />
-              </Link>
-							<Link
-                to={""}
-                className="w-10 h-10 flex items-center justify-center bg-light hover:bg-primary rounded-full text-dark text-lg hover:text-white transition-all duration-300"
-              >
-                <FaLinkedin />
-              </Link>
-						</ul>
 					</div>
 
-					<div className="lg:col-span-2 grid md:grid-cols-4 md:gap-0 gap-8">
+					<div className="lg:col-span-3 grid md:grid-cols-2 md:gap-0 gap-8">
             <ul className="md:col-span-1 flex flex-col gap-4">
+              <h3 className='text-primary font-[Montserrat]! font-bold!'>Quick Links</h3>
               <Link
-                to={""}
+                to={"/shop"}
+                className="text-dark hover:text-dark/70 transition-all duration-300"
+              >Shop</Link>
+              <Link
+                to={"/aboutus"}
                 className="text-dark hover:text-dark/70 transition-all duration-300"
               >About us</Link>
-              <Link
+              {/* <Link
                 to={""}
                 className="text-dark hover:text-dark/70 transition-all duration-300"
-              >Blog</Link>
+              >Blog</Link> */}
               <Link
-                to={""}
+                to={"/contactus"}
                 className="text-dark hover:text-dark/70 transition-all duration-300"
               >Contact us</Link>
             </ul>
 
-            <ul className="md:col-span-1 flex flex-col gap-4">
-              <Link
-                to={""}
-                className="text-dark hover:text-dark/70 transition-all duration-300"
-              >Support</Link>
-              <Link
-                to={""}
-                className="text-dark hover:text-dark/70 transition-all duration-300"
-              >Knowledge base</Link>
-              <Link
-                to={""}
-                className="text-dark hover:text-dark/70 transition-all duration-300"
-              >Live chat</Link>
-            </ul>
-
-            <ul className="md:col-span-1 flex flex-col gap-4">
-              <Link
-                to={""}
-                className="text-dark hover:text-dark/70 transition-all duration-300"
-              >Jobs</Link>
-              <Link
-                to={""}
-                className="text-dark hover:text-dark/70 transition-all duration-300"
-              >Our team</Link>
-              <Link
-                to={""}
-                className="text-dark hover:text-dark/70 transition-all duration-300"
-              >Leadership</Link>
-              <Link
-                to={""}
-                className="text-dark hover:text-dark/70 transition-all duration-300"
-              >Privacy Policy</Link>
-            </ul>
-
-            <ul className="md:col-span-1 flex flex-col gap-4">
-              <Link
-                to={""}
-                className="text-dark hover:text-dark/70 transition-all duration-300"
-              >Supercoat Emulsion Paint</Link>
-              <Link
-                to={""}
-                className="text-dark hover:text-dark/70 transition-all duration-300"
-              >Premium Emulsion Paint</Link>
-              <Link
-                to={""}
-                className="text-dark hover:text-dark/70 transition-all duration-300"
-              >ExtraCoat Emulsion Paint</Link>
-            </ul>
+            <ul className="flex flex-col items-start gap-4">
+              <h3 className='text-primary font-[Montserrat]! font-bold!'>Socials</h3>
+              <ul className="md:col-span-1 flex flex-row gap-4">
+                <Link
+                  to={"#"}
+                  className="w-10 h-10 flex items-center justify-center bg-light hover:bg-primary rounded-full text-dark text-lg hover:text-white transition-all duration-300"
+                >
+                  <FaFacebook />
+                </Link>
+                <Link
+                  to={"#"}
+                  className="w-10 h-10 flex items-center justify-center bg-light hover:bg-primary rounded-full text-dark text-lg hover:text-white transition-all duration-300"
+                >
+                  <FaTwitter />
+                </Link>
+                <Link
+                  to={"https://www.instagram.com/oniptechmultipleconcept"}
+                  className="w-10 h-10 flex items-center justify-center bg-light hover:bg-primary rounded-full text-dark text-lg hover:text-white transition-all duration-300"
+                >
+                  <FaInstagram />
+                </Link>
+                <Link
+                  to={"#"}
+                  className="w-10 h-10 flex items-center justify-center bg-light hover:bg-primary rounded-full text-dark text-lg hover:text-white transition-all duration-300"
+                >
+                  <FaLinkedin />
+                </Link>
+              </ul>
+						</ul>
 					</div>
 
 				</div>

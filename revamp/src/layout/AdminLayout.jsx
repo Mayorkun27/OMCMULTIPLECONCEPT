@@ -81,7 +81,7 @@ const AdminLayout = ({ children, pageName }) => {
                     </button>
                 </div>
             </div>
-            <div className="lg:w-[88%] h-full w-full px-4 py-6 space-y-6">
+            <div className="lg:w-[88%] h-full w-full px-4 py-6 space-y-8">
                 <div className="w-full flex items-center justify-between">
                     <div className="flex items-center gap-2">
                         <button

@@ -130,7 +130,7 @@ const NavBar = () => {
                         isScrolled
                             ? "bg-black text-light"
                             : "bg-white text-dark"
-                        } top-[80%] right-0 ${
+                        } top-[100%] right-0 ${
                         showOptions
                             ? "block"
                             : "hidden"

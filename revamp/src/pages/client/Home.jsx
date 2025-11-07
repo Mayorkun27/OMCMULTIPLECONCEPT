@@ -300,7 +300,7 @@ const Home = () => {
           ))}
         </Swiper>
       </div> */}
-      <div className='made-container lg:pt-20 md:pt-12 pb-20 relative'>
+      <div className='made-container lg:pt-20 md:pt-12 md:pb-20 relative'>
         <h3 className='lg:text-3xl md:text-2xl text-3xl font-medium! mb-8 text-center font-[Montserrat]!'>Testimonials</h3>
         <TestimonialSlider />
       </div>
