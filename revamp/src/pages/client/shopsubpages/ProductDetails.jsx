@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import MiniHerosection from '../../../components/MiniHerosection';
 import { assets } from '../../../assets/assets';
@@ -46,11 +46,12 @@ const ProductDetails = () => {
     const randomIndex = Math.floor(Math.random() * images.length)
 
     const handleAddToCart = () => {
-        // if (!selectedColor) {
-        //     toast.error('Please Available colors first.');
-        //     return;
-        // }
+        if (!selectedColor && availableColors.length > 0) {
+            toast.error('Please select an available color first.');
+            return;
+        }
         if (productDetails) {
+            // Ensure you are passing the product object, not the color object
             addToCart({ ...productDetails, selectedColor });
         }
     };
@@ -76,6 +77,31 @@ const ProductDetails = () => {
 
         return luminance > 149 ? '#000000' : '#FFFFFF';
     };
+
+    const availableColors = useMemo(() => {
+        const colorData = productDetails?.color;
+        if (!colorData) return [];
+
+        try {
+            // 1. Attempt to parse it as JSON (e.g., '["#FF0000", "#0000FF"]')
+            const parsedColors = JSON.parse(colorData);
+            // Ensure the result is an array
+            return Array.isArray(parsedColors) ? parsedColors : [];
+        } catch (e) {
+            // 2. If JSON.parse fails, assume it's a single comma-separated or single string
+            if (typeof colorData === 'string' && colorData.trim() !== '') {
+                // Handle cases like "white, blue, red" or just "white"
+                return colorData.split(',').map(c => c.trim()).filter(c => c.length > 0);
+            }
+            return [];
+        }
+    }, [productDetails?.color]);
+
+    useEffect(() => {
+        if (!selectedColor && availableColors.length > 0) {
+            setSelectedColor(availableColors[0]);
+        }
+    }, [availableColors, selectedColor]);
 
     const buttonTextColor = selectedColor ? getContrastColor(selectedColor) : '#FFFFFF';
 
@@ -105,7 +131,7 @@ const ProductDetails = () => {
                                 <p>Available colors: <span className='font-bold! font-[Montserrat]! text-shadow-sm selected-color' style={{ color: selectedColor }}>{selectedColor}</span></p>
                                 <div className="flex flex-wrap items-center gap-4">
                                     {
-                                        productDetails?.color && JSON.parse(productDetails?.color)?.map((c, index) => (
+                                        availableColors.map((c, index) => ( // <-- Use availableColors here
                                             <div 
                                                 key={index} 
                                                 className={`w-8 h-8 cursor-pointer border border-black/20 ${selectedColor === c && "border-6 border-light rounded-full"}`}
@@ -123,7 +149,7 @@ const ProductDetails = () => {
                                     type='button'
                                     onClick={handleAddToCart}
                                     disabled={isAddingToCart || loadingProductDetails}
-                                    className='w-full cursor-pointer font-bold! hover:bg-primary px-4 h-10 text-sm flex items-center justify-center gap-2 rounded-md transition-all duration-300'
+                                    className='w-full border border-black/30 cursor-pointer font-bold! hover:bg-primary px-4 h-10 text-sm flex items-center justify-center gap-2 rounded-md transition-all duration-300'
                                     style={{
                                         backgroundColor: selectedColor ? selectedColor : "#3b5d50",
                                         color: buttonTextColor
@@ -144,7 +170,7 @@ const ProductDetails = () => {
                             <p>Available colors: <span className='font-bold! font-[Montserrat]! text-shadow-sm selected-color' style={{ color: selectedColor }}>{selectedColor}</span></p>
                             <div className="flex flex-wrap items-center gap-4">
                                 {
-                                    productDetails?.color && JSON.parse(productDetails?.color)?.map((c, index) => (
+                                    availableColors.map((c, index) => ( // <-- Use availableColors here
                                         <div 
                                             key={index} 
                                             className={`w-8 h-8 cursor-pointer border border-black/20 ${selectedColor === c && "border-4 border-light rounded-full"}`}

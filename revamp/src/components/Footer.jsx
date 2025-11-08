@@ -76,11 +76,23 @@ const Footer = () => {
 
 				<div className="grid lg:grid-cols-3 gap-6 md:text-sm text-xs pt-8 items-center border-t border-light copyright">
           <p className="lg:col-span-2 text-center lg:text-start font-[Montserrat]!">
-            Copyright &copy;{year}. All Rights Reserved. &mdash; Developed with love by 
-            <Link
-              to={"https://oluwamayokun.vercel.app"}
-              className="ms-1 text-dark hover:text-dark/70 transition-all duration-300"
-            >Oluwamayokun</Link>
+            Copyright &copy;{year}. All Rights Reserved. &mdash; 
+            <span className='ms-1 text-xs'> 
+              Developed with love by 
+              <Link
+                to={"https://oluwamayokun.vercel.app"}
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="mx-1 text-dark hover:text-dark/70 transition-all duration-300 underline"
+              >Oluwamayokun</Link> 
+              and
+              <Link
+                to={"https://github.com/Osunjimi"}
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="mx-1 text-dark hover:text-dark/70 transition-all duration-300 underline"
+              >High Bee</Link>
+            </span>
           </p>
 
           <ul className="flex items-center lg:justify-end justify-center gap-4">
