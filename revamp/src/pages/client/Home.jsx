@@ -29,7 +29,7 @@ const Home = () => {
       setIsLoading(true)
       try {
         const response = await api.call('/products', "GET");
-        console.log(response);
+        // console.log(response);
         if (response.status === 200) {
           const { data, current_page, last_page } = response.data.data;
           setProducts(data);

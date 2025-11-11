@@ -3,12 +3,14 @@ import { persist } from 'zustand/middleware';
 import { toast } from 'sonner';
 import axios from 'axios';
 import api from '../api';
+import useCartStore from './cartStore'; // Import the cart store
 
 const useAuthStore = create(
   persist(
-    (set) => ({
+    (set, get) => ({ // Add get to access state
       token: null,
       user: null,
+      isLoggingOut: false, // Flag to prevent repeated logout calls
       login: async (email, password) => {
         try {
           const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/login`, { email, password });
@@ -28,7 +30,14 @@ const useAuthStore = create(
         }
       },
       logout: async () => {
+        if (get().isLoggingOut) {
+          return; // Prevent re-entrant calls
+        }
+        set({ isLoggingOut: true });
+
         try {
+          useCartStore.getState().clearCartLocally();
+
           const response = await api.call("/logout", "POST")
           if (response.status === 200) {
             // toast.success("Logged out successfully");
@@ -41,8 +50,9 @@ const useAuthStore = create(
           console.error('An error occurred trying to logout');
           return false;
         } finally {
-          set({ token: null, user: null });
-          toast.success('Logged out successfully');
+          // Finally, clear local auth state and reset the flag
+          set({ token: null, user: null, isLoggingOut: false });
+          // toast.success('Logged out successfully');
         }
       },
     }),

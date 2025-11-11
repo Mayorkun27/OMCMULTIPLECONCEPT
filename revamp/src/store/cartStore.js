@@ -35,7 +35,7 @@ const useCartStore = create(
           }
         } catch (error) {
           console.error(`Failed to add ${product.name} to cart:`, error);
-          toast.error(`Failed to add ${product.name} to cart`);
+          toast.error(`Failed to add ${product.name} to cart: ${error || error?.response?.data?.message || error?.message}`);
         } finally {
           set({ addingProductId: null });
         }
@@ -56,11 +56,14 @@ const useCartStore = create(
         try {
           await api.call('/cart', 'DELETE');
           set({ cart: [] });
-          toast.error('Cart cleared');
+          toast.success('Cart cleared'); // Changed to success toast
         } catch (error) {
           console.error('Failed to clear cart:', error);
           toast.error('Failed to clear cart');
         }
+      },
+      clearCartLocally: () => { // New function to clear cart locally
+        set({ cart: [] });
       },
       increaseQuantity: async (productId) => {
         set({ updatingProductId: productId });

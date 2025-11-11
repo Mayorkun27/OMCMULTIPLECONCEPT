@@ -1,5 +1,6 @@
 import React from 'react'
 import { FaFacebook, FaInstagram, FaLinkedin, FaPaperPlane, FaRegEnvelope, FaTwitter } from 'react-icons/fa'
+import { FaWhatsapp } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -46,27 +47,35 @@ const Footer = () => {
               <ul className="md:col-span-1 flex flex-row gap-4">
                 <Link
                   to={"#"}
-                  className="w-10 h-10 flex items-center justify-center bg-light hover:bg-primary rounded-full text-dark text-lg hover:text-white transition-all duration-300"
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 hidden items-center justify-center bg-light hover:bg-primary rounded-full text-dark text-lg hover:text-white transition-all duration-300"
                 >
                   <FaFacebook />
                 </Link>
                 <Link
                   to={"#"}
-                  className="w-10 h-10 flex items-center justify-center bg-light hover:bg-primary rounded-full text-dark text-lg hover:text-white transition-all duration-300"
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 hidden items-center justify-center bg-light hover:bg-primary rounded-full text-dark text-lg hover:text-white transition-all duration-300"
                 >
                   <FaTwitter />
                 </Link>
                 <Link
                   to={"https://www.instagram.com/oniptechmultipleconcept"}
+                  target="_blank" 
+                  rel="noopener noreferrer"
                   className="w-10 h-10 flex items-center justify-center bg-light hover:bg-primary rounded-full text-dark text-lg hover:text-white transition-all duration-300"
                 >
                   <FaInstagram />
                 </Link>
                 <Link
-                  to={"#"}
+                  to={"https://wa.me/<number>"}
+                  target="_blank" 
+                  rel="noopener noreferrer"
                   className="w-10 h-10 flex items-center justify-center bg-light hover:bg-primary rounded-full text-dark text-lg hover:text-white transition-all duration-300"
                 >
-                  <FaLinkedin />
+                  <FaWhatsapp />
                 </Link>
               </ul>
 						</ul>

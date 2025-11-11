@@ -32,7 +32,7 @@ const Contact = () => {
         .required("Message is required"),
     }),
     onSubmit: async (values) => {
-      console.log(values)
+      // console.log(values)
     }
   })
 

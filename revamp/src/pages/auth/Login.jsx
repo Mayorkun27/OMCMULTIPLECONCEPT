@@ -28,7 +28,7 @@ const Login = () => {
         }),
         onSubmit: async (values) => {
             const success = await login(values.email, values.password);
-            console.log("login success", success);
+            // console.log("login success", success);
             if (success === "admin") {
                 navigate('/admin/addproducts');
             } else if (success == "customer") {

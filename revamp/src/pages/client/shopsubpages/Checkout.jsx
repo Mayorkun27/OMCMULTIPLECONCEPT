@@ -48,17 +48,17 @@ const Checkout = () => {
       city: Yup.string()
         .required("City is required!."),
       postal: Yup.string()
-        .required("Postal Code is required!."),
+        .optional(),
     }),
     onSubmit: async (values) => {
       setIsSubmitting(true);
       try {
         const response = await api.call('/addresses', 'POST', values);
-        console.log("address response", response)
+        // console.log("address response", response)
         if (response) {
           toast.success(response?.data?.message || 'Address saved successfully!');
           setConfirmedAddress(values);
-          console.log("response.data.address.id",response.data.address.id)
+          // console.log("response.data.address.id",response.data.address.id)
           setAddressId(response.data.address.id)
           setAddressConfirmed(true);
         }
@@ -75,7 +75,7 @@ const Checkout = () => {
     setIsSubmitting(true);
     try {
       const response = await api.call('/order/checkout', 'POST', { address_id : addressId });
-      console.log("response", response)
+      // console.log("response", response)
       if (response.status === 200 && response.data.payment_url) {
         toast.success(response.data.message || "Order created successfully, redirecting to payment page...")
         window.location.href = response.data.payment_url;

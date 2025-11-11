@@ -38,10 +38,10 @@ const Register = () => {
                 .oneOf([Yup.ref('password'), null], "Passwords are not the same"),
         }),
         onSubmit: async (values) => {
-            console.log(values);
+            // console.log(values);
             try {
                 const response = await api.call('/register', "POST", values);
-                console.log(response);
+                // console.log(response);
                 if (response.status === 201 || response.status === 200) {
                     toast.success('Registration successful! Please log in.');
                     setTimeout(() => {

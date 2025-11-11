@@ -26,7 +26,7 @@ const ManageOrder = () => {
     const fetchOrders = async () => {
       try {
         const response = await api.call('/admin/orders');
-        console.log("response", response)
+        // console.log("response", response)
         if (response.status === 200) {
           const { data, current_page, last_page } = response.data.orders;
           setOrders(data);

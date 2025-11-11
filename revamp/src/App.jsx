@@ -65,7 +65,7 @@ function App() {
           element={<MainLayout children={<Checkout />} />}
         />
         <Route 
-          path="/checkout/success"
+          path="/checkout/confirmation"
           element={<CheckoutSuccess />}
         />
         <Route 
