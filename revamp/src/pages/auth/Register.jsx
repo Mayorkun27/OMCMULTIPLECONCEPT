@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import MiniHerosection from '../../components/MiniHerosection'
 import { assets } from '../../assets/assets'
 import { useFormik } from 'formik'
@@ -6,9 +6,14 @@ import * as Yup from "yup";
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import api from '../../api';
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa6';
 
 const Register = () => {
     const navigate = useNavigate();
+    const [isVisible, setIsVisible] = useState({
+        password: false,
+        password_confirmation: false,
+    })
 
     useEffect(() => {
         window.scroll(0, 0)
@@ -77,7 +82,7 @@ const Register = () => {
                                 <h3 className='font-bold! tracking-wide md:text-6xl text-3xl drop-shadow-xl font-[Montserrat]! text-light'>Create an Account.</h3>
                             </div>
                         </div>
-                        <form onSubmit={formik.handleSubmit} className='lg:col-span-7 col-span-12 grid md:grid-cols-2 grid-cols-1 rounded-2xl bg-white shadow-md md:p-8 p-6 items-center justify-center gap-x-4 gap-y-6 text-sm'>
+                        <form onSubmit={formik.handleSubmit} className='lg:col-span-7 col-span-12 grid md:grid-cols-2 grid-cols-1 rounded-2xl bg-white shadow-md md:p-8 p-6 items-start justify-center gap-x-4 gap-y-6 text-sm'>
                             <div className="flex flex-col gap-1 w-full md:col-span-2">
                                 <label className="font-[Montserrat]! font-medium!" htmlFor="name">Enter your name</label>
                                 <input 
@@ -119,28 +124,62 @@ const Register = () => {
                             </div>
                             <div className="flex flex-col gap-1 w-full">
                                 <label className="font-[Montserrat]! font-medium!" htmlFor="password">Enter your password</label>
-                                <input 
-                                    type="password" 
-                                    name="password" 
-                                    id="password"
-                                    autoComplete='current-password'
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    className='border border-primary indent-2 rounded-md outline-0 py-2'
-                                />
+                                <div className='w-full border border-primary rounded-md outline-0 flex items-center px-2'>
+                                    <input 
+                                        type={isVisible.password ? "text" : "password"}
+                                        name="password" 
+                                        id="password"
+                                        autoComplete='current-password'
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        className='border-0 rounded-md outline-0 py-2 w-full'
+                                    />
+                                    <button
+                                        type='button'
+                                        onClick={() => setIsVisible(prev => ({
+                                            ...prev,
+                                            password: !prev.password
+                                        }))}
+                                    >
+                                        {
+                                            isVisible.password ? (
+                                                <FaRegEyeSlash size={18} />
+                                            ) : (
+                                                <FaRegEye size={18} />
+                                            )
+                                        }
+                                    </button>
+                                </div>
                                 {formik.touched.password && formik.errors.password && (<p className='text-red-600 text-sm'>{formik.errors.password}</p>)}
                             </div>
                             <div className="flex flex-col gap-1 w-full">
                                 <label className="font-[Montserrat]! font-medium!" htmlFor="password_confirmation">Enter your Passsword again</label>
-                                <input 
-                                    type="password" 
-                                    name="password_confirmation" 
-                                    id="password_confirmation"
-                                    autoComplete='current-password'
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    className='border border-primary indent-2 rounded-md outline-0 py-2'
-                                />
+                                <div className='w-full border border-primary rounded-md outline-0 flex items-center px-2'>
+                                    <input 
+                                        type={isVisible.password_confirmation ? "text" : "password"}
+                                        name="password_confirmation" 
+                                        id="password_confirmation"
+                                        autoComplete='current-password'
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        className='border-0 rounded-md outline-0 py-2 w-full'
+                                    />
+                                    <button
+                                        type='button'
+                                        onClick={() => setIsVisible(prev => ({
+                                            ...prev,
+                                            password_confirmation: !prev.password_confirmation
+                                        }))}
+                                    >
+                                        {
+                                            isVisible.password_confirmation ? (
+                                                <FaRegEyeSlash size={18} />
+                                            ) : (
+                                                <FaRegEye size={18} />
+                                            )
+                                        }
+                                    </button>
+                                </div>
                                 {formik.touched.password_confirmation && formik.errors.password_confirmation && (<p className='text-red-600 text-sm'>{formik.errors.password_confirmation}</p>)}
                             </div>
                             <button

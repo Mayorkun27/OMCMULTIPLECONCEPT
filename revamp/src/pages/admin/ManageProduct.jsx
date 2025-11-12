@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Modal from '../../components/modals/Modal';
-import { assets } from '../../assets/assets';
 import { formatISODateToCustom, formatterUtility } from '../../utilities/formatterutility';
 import { MdDelete, MdEdit, MdRemoveRedEye } from 'react-icons/md';
 import { useFormik } from 'formik';
@@ -234,7 +233,12 @@ const ManageProduct = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map((product, index) => (
+                        {products.length === 0 ? (
+                            <tr>
+                                <td colSpan={6} className='text-center p-5 text-gray-600'>No Products found</td>
+                            </tr>
+                        ) : (
+                            products.map((product, index) => (
                             <tr key={product.id} className='last:border-b-0 border-b text-xs border-black/20'>
                                 <td className="px-4 py-2 text-start">{String(index+1).padStart(3, "0")}</td>
                                 <td className="px-4 py-2">
@@ -254,7 +258,7 @@ const ManageProduct = () => {
                                     </div>
                                 </td>
                             </tr>
-                        ))}
+                        )))}
                     </tbody>
                     <tfoot>
                       <tr>

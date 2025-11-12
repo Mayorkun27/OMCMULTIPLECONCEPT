@@ -6,15 +6,15 @@ import useCartStore from '../../store/cartStore';
 
 const ProductCard = (props) => {
     const { id, name, description, price, image } = props;
-    const { addToCart, loadingProductId } = useCartStore();
+    const { loadingProductId } = useCartStore();
 
     const isLoading = loadingProductId === id;
 
-    const handleAddToCart = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        addToCart(props);
-    }
+    // const handleAddToCart = (e) => {
+    //     e.preventDefault();
+    //     e.stopPropagation();
+    //     addToCart(props);
+    // }
 
     return (
         <Link

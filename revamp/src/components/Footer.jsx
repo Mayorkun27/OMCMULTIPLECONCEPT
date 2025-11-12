@@ -46,10 +46,10 @@ const Footer = () => {
               <h3 className='text-primary font-[Montserrat]! font-bold!'>Socials</h3>
               <ul className="md:col-span-1 flex flex-row gap-4">
                 <Link
-                  to={"#"}
+                  to={"https://www.facebook.com/share/1AAB6Ahm2E/"}
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="w-10 h-10 hidden items-center justify-center bg-light hover:bg-primary rounded-full text-dark text-lg hover:text-white transition-all duration-300"
+                  className="w-10 h-10 flex items-center justify-center bg-light hover:bg-primary rounded-full text-dark text-lg hover:text-white transition-all duration-300"
                 >
                   <FaFacebook />
                 </Link>

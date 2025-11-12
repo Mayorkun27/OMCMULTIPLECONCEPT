@@ -54,27 +54,6 @@ const About = () => {
     },
   ]
 
-  const testimonials = [
-    {
-      body: "“Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer convallis volutpat dui quis scelerisque.”",
-      name: "Maria Jones",
-      position: "CEO, Co-Founder, XYZ Inc.",
-      image: assets.person1
-    },
-    {
-      body: "“Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer convallis volutpat dui quis scelerisque.”",
-      name: "Maria Jones",
-      position: "CEO, Co-Founder, XYZ Inc.",
-      image: assets.person1
-    },
-    {
-      body: "“Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer convallis volutpat dui quis scelerisque.”",
-      name: "Maria Jones",
-      position: "CEO, Co-Founder, XYZ Inc.",
-      image: assets.person1
-    },
-  ]
-
   return (
     <div>
       <MiniHerosection 

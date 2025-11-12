@@ -116,7 +116,7 @@ const ManageOrder = () => {
       // .filter(order => 
       //   statusFilter === 'All' || order.status === statusFilter
       // );
-  }, [orders, searchQuery, statusFilter]);
+  }, [orders, searchQuery]);
 
   if (loading) {
     return <div className="bg-white rounded-2xl p-6">Loading orders...</div>;
@@ -134,7 +134,7 @@ const ManageOrder = () => {
                 className="border border-primary/30 placeholder:text-black/30 indent-3 rounded-md outline-0 py-2 w-full text-sm"
             />
         </div>
-        {/* <div>
+        <div hidden>
             <select 
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
@@ -145,7 +145,7 @@ const ManageOrder = () => {
                 <option value="Completed">Completed</option>
                 <option value="Declined">Declined</option>
             </select>
-        </div> */}
+        </div>
       </div>
 
       <div className="overflow-x-auto">

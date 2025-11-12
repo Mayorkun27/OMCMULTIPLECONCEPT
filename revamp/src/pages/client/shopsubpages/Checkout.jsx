@@ -77,7 +77,7 @@ const Checkout = () => {
       const response = await api.call('/order/checkout', 'POST', { address_id : addressId });
       // console.log("response", response)
       if (response.status === 200 && response.data.payment_url) {
-        toast.success(response.data.message || "Order created successfully, redirecting to payment page...")
+        toast.success("Order created successfully, redirecting to payment page...")
         window.location.href = response.data.payment_url;
       }
     } catch (error) {
@@ -96,6 +96,7 @@ const Checkout = () => {
         setCountries(response.data.data);
       } catch (error) {
         toast.error('Failed to fetch countries.');
+        console.error('Failed to fetch countries: ', error);
       } finally {
         setLoadingCountries(false);
       }
@@ -105,15 +106,19 @@ const Checkout = () => {
 
   useEffect(() => {
     if (formik.values.country) {
+      setLoadingStates(true)
       const selectedCountry = countries.find(c => c.name === formik.values.country);
       if (selectedCountry) {
         setStates(selectedCountry.states);
         setCities([]);
         formik.setFieldValue('state', '');
         formik.setFieldValue('city', '');
+        setTimeout(() => {
+          setLoadingStates(false);
+        }, 1000)
       }
     }
-  }, [formik.values.country, countries]);
+  }, [formik.values.country, countries, formik]);
 
   useEffect(() => {
     if (formik.values.state) {
@@ -128,13 +133,14 @@ const Checkout = () => {
           formik.setFieldValue('city', '');
         } catch (error) {
           toast.error('Failed to fetch cities.');
+          console.error('Failed to fetch cities: ', error);
         } finally {
           setLoadingCities(false);
         }
       };
       fetchCities();
     }
-  }, [formik.values.state, formik.values.country]);
+  }, [formik.values.state, formik.values.country, formik]);
   
   return (
     <div>
@@ -253,7 +259,7 @@ const Checkout = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 className='border border-primary indent-2 rounded-md outline-0 py-3.5'
-                disabled={!formik.values.country || loadingStates}
+                disabled={loadingStates || !formik.values.country}
               >
                   <option value="">{loadingStates ? 'Loading...' : 'Select State'}</option>
                   {states.map(state => (

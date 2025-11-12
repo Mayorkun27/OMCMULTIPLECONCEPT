@@ -24,9 +24,10 @@ const Shop = () => {
       setIsLoading(true)
       try {
         const response = await api.call('/products', "GET");
-        // // console.log(response);
+        // console.log(response);
         if (response.status === 200) {
           const { data, current_page, last_page } = response.data.data;
+          // console.log(data);
           setProducts(data);
           setCurrentPage(current_page)
           setlastPage(last_page)
@@ -110,7 +111,7 @@ const Shop = () => {
               Array(8).fill(0).map((_, index) => (
                 <ProductCardSkeleton key={index} />
               ))
-            ) : products.length > 1 && (
+            ) : products.length > 0 && (
               products.map((product, index) => (
               <ProductCard 
                 key={product.id+index}

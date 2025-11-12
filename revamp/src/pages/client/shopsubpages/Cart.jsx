@@ -8,7 +8,7 @@ import CartCard from '../../../components/cards/CartCard';
 import useCartStore from '../../../store/cartStore';
 
 const Cart = () => {
-  const { cart, fetchCart, removeFromCart, clearCart } = useCartStore();
+  const { cart, fetchCart, removeFromCart } = useCartStore();
   
   useEffect(() => {
     window.scroll(0, 0)

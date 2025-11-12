@@ -88,6 +88,7 @@ const ProductDetails = () => {
             // Ensure the result is an array
             return Array.isArray(parsedColors) ? parsedColors : [];
         } catch (e) {
+            console.error("Error parsing color data:", e);
             // 2. If JSON.parse fails, assume it's a single comma-separated or single string
             if (typeof colorData === 'string' && colorData.trim() !== '') {
                 // Handle cases like "white, blue, red" or just "white"

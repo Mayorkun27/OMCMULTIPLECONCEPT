@@ -6,6 +6,7 @@ import { FaBars } from 'react-icons/fa';
 import { FaXmark } from "react-icons/fa6";
 import useAuthStore from '../store/authStore';
 import { toast } from 'sonner';
+import { GoChecklist } from "react-icons/go";
 
 const AdminLayout = ({ children, pageName }) => {
 
@@ -19,7 +20,7 @@ const AdminLayout = ({ children, pageName }) => {
             toast.info('You must be logged in to access this page.');
             window.location.href = "/login"
         }
-    }, [isLoggedIn])
+    }, [user?.role, isLoggedIn])
 
     const navLink = [
         {
@@ -41,6 +42,11 @@ const AdminLayout = ({ children, pageName }) => {
             path: "/admin/manageorders",
             name: "Manage Orders",
             icon: <MdBookmarkBorder />
+        },
+        {
+            path: "/admin/subscribers",
+            name: "Subscribers",
+            icon: <GoChecklist />
         },
     ]
 

@@ -1,14 +1,16 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import MiniHerosection from '../../components/MiniHerosection'
 import { assets } from '../../assets/assets'
 import { useFormik } from 'formik'
 import * as Yup from "yup";
 import { Link, useNavigate } from 'react-router-dom';
 import useAuthStore from '../../store/authStore';
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const Login = () => {
     const { login } = useAuthStore();
     const navigate = useNavigate();
+    const [isVisible, setIsVisible] = useState(false)
 
     useEffect(() => {
         window.scroll(0, 0)
@@ -72,15 +74,29 @@ const Login = () => {
                         </div>
                         <div className="flex flex-col gap-1 w-full">
                             <label className="font-[Montserrat]! font-medium!" htmlFor="password">Enter your password</label>
-                            <input 
-                                type="password" 
-                                name="password" 
-                                id="password"
-                                autoComplete='current-password'
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                className='border border-primary indent-2 rounded-md outline-0 py-2'
-                            />
+                            <div className='w-full border border-primary rounded-md outline-0 flex items-center px-2'>
+                                <input 
+                                    type={isVisible ? "text" : "password"}
+                                    name="password" 
+                                    id="password"
+                                    autoComplete='current-password'
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    className='border-0 rounded-md outline-0 py-2 w-full'
+                                />
+                                <button
+                                    type='button'
+                                    onClick={() => setIsVisible(prev => !prev)}
+                                >
+                                    {
+                                        isVisible ? (
+                                            <FaRegEyeSlash size={18} />
+                                        ) : (
+                                            <FaRegEye size={18} />
+                                        )
+                                    }
+                                </button>
+                            </div>
                             {formik.touched.password && formik.errors.password && (<p className='text-red-600 text-sm'>{formik.errors.password}</p>)}
                         </div>
                         <button

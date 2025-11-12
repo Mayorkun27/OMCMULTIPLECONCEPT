@@ -18,7 +18,7 @@ const useAuthStore = create(
           if (response.status === 200) {
             set({ token: data.token, user: data.user });
             toast.success('Login successful');
-            return true && data.user.role;
+            return data.user.role;
           } else {
             toast.error(data.message || 'Login failed');
             return false;
@@ -47,12 +47,12 @@ const useAuthStore = create(
             return false;
           }
         } catch (error) {
-          console.error('An error occurred trying to logout');
+          console.error('An error occurred trying to logout: ', error);
           return false;
         } finally {
           // Finally, clear local auth state and reset the flag
           set({ token: null, user: null, isLoggingOut: false });
-          // toast.success('Logged out successfully');
+          toast.success('Logged out successfully');
         }
       },
     }),

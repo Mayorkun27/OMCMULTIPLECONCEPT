@@ -31,7 +31,9 @@ const Home = () => {
         const response = await api.call('/products', "GET");
         // console.log(response);
         if (response.status === 200) {
-          const { data, current_page, last_page } = response.data.data;
+          const { data, 
+            // current_page, last_page 
+          } = response.data.data;
           setProducts(data);
         }
       } catch (error) {
@@ -66,27 +68,6 @@ const Home = () => {
       icon: <PiArrowsClockwiseLight />,
       heading: "Hassle Free Transactions",
       body: "We make transactions easy and convenient, with secure payment options and transparent processes.",
-    },
-  ]
-
-  const testimonials = [
-    {
-      body: "“Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer convallis volutpat dui quis scelerisque.”",
-      name: "Maria Jones",
-      position: "CEO, Co-Founder, XYZ Inc.",
-      image: assets.person1
-    },
-    {
-      body: "“Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer convallis volutpat dui quis scelerisque.”",
-      name: "Maria Jones",
-      position: "CEO, Co-Founder, XYZ Inc.",
-      image: assets.person1
-    },
-    {
-      body: "“Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer convallis volutpat dui quis scelerisque.”",
-      name: "Maria Jones",
-      position: "CEO, Co-Founder, XYZ Inc.",
-      image: assets.person1
     },
   ]
 
@@ -163,7 +144,7 @@ const Home = () => {
               Array(4).fill(0).map((_, index) => (
                 <ProductCardSkeleton key={index} />
               ))
-            ) : products.length > 1 && (
+            ) : products.length > 0 && (
               products.slice(0, 4).map((product, index) => (
               <ProductCard 
                 key={product.id+index}
@@ -171,27 +152,6 @@ const Home = () => {
               />
             ))
           )}
-          {/* <ProductCard 
-            id="2"
-            name="OMC Emulsion Paint"
-            description="Suitable as a finishing coat for interior/exterior concrete plaster or cement rendered surfaces to give a highly granular, attractive finish"
-            price="100000"
-            image={assets.product1}
-          />
-          <ProductCard 
-            id="3"
-            name="OMC Emulsion Paint"
-            description="Suitable as a finishing coat for interior/exterior concrete plaster or cement rendered surfaces to give a highly granular, attractive finish"
-            price="100000"
-            image={assets.product1}
-          />
-          <ProductCard 
-            id="4"
-            name="OMC Emulsion Paint"
-            description="Suitable as a finishing coat for interior/exterior concrete plaster or cement rendered surfaces to give a highly granular, attractive finish"
-            price="100000"
-            image={assets.product1}
-          /> */}
         </div>
         <div className="md:hidden block">
           <Link
@@ -270,36 +230,6 @@ const Home = () => {
           </Link>
         </div>
       </div>
-      {/* testimonials */}
-      {/* <div className='made-container py-20 relative'>
-        <h3 className='lg:text-3xl md:text-2xl text-3xl font-medium lg:mb-6 text-center'>Testimonials</h3>
-        <Swiper
-          modules={[Navigation, Pagination, A11y, Autoplay]}
-          spaceBetween={100}
-          slidesPerView={1}
-          loop
-          navigation
-          pagination={{ clickable: true }}
-          autoplay={{
-            delay: 2500,
-            disableOnInteraction: false,
-          }}
-          className="lg:w-[90%] lg:px-20! pb-12!"
-        >
-          {testimonials.map((item) => (
-            <SwiperSlide key={item}>
-              <div className='md:p-10 pt-10 pb-0 flex flex-col items-center justify-center text-center text-dark/80'>
-                <p className='md:text-xl text-sm'>{item.body}</p>
-                <div className="mt-10 text-sm">
-                  <img src={item.image} alt={item.name} className='w-20 h-20 mx-auto object-cover rounded-full mb-3' />
-                  <h3 className='font-bold text-dark'>{item.name}</h3>
-                  <p>{item.position}</p>
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div> */}
       <div className='made-container lg:pt-20 md:pt-12 md:pb-20 relative'>
         <h3 className='lg:text-3xl md:text-2xl text-3xl font-medium! mb-8 text-center font-[Montserrat]!'>Testimonials</h3>
         <TestimonialSlider />

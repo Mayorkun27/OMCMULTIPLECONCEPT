@@ -136,13 +136,13 @@ const NavBar = () => {
                             : "hidden"
                     } flex flex-col`}
                 >
-                  {/* <Link
+                  <Link
                     to="/myorders"
                     className="text-xs font-medium hover:bg-body_color/10 border-b border-body_color/70 last:border py-1"
                   >
                     My Orders
                   </Link>
-                  <Link
+                  {/* <Link
                     to=""
                     className="text-xs font-medium hover:bg-body_color/10 border-b border-body_color/70 last:border py-1"
                   >
