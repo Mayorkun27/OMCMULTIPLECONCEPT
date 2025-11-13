@@ -4,10 +4,10 @@ import { HiOutlineMinusSmall } from 'react-icons/hi2';
 import { GoPlus } from 'react-icons/go';
 import { formatterUtility } from '../../utilities/formatterutility';
 import useCartStore from '../../store/cartStore';
-import { Link } from 'react-router-dom';
 
-const CartCard = ({ id, name, price, image, quantity, removeFromCart }) => {
+const CartCard = ({ id, name, price, image, quantity, color, removeFromCart }) => {
     const { increaseQuantity, decreaseQuantity, updatingProductId } = useCartStore();
+    console.log(id, name, price, image, quantity, color, removeFromCart)
     const isUpdating = updatingProductId === id;
 
   return (
@@ -25,7 +25,18 @@ const CartCard = ({ id, name, price, image, quantity, removeFromCart }) => {
         </div>
         <div className="w-full flex md:flex-row flex-col md:items-center items-start gap-2 justify-between">
             <div className="flex flex-col font-medium items-start">
-                <Link to={`/shop/${id}`} className='md:text-lg text-sm font-medium! font-[Montserrat]! underline'>{name}</Link>
+                <p className='md:text-lg text-sm font-medium! font-[Montserrat]! underline'>{name}</p>
+                <div className='text-sm font-medium! font-[Montserrat]! flex items-center gap-1'>
+                    <div
+                        title={color}
+                        aria-label={color}
+                        className={`w-4 h-4 cursor-pointer rounded-full border border-black/20`}
+                        style={{
+                            backgroundColor: color,
+                        }}
+                    ></div>
+                    <p className='uppercase'>{color}</p>
+                </div>
             </div>
             <div className="flex lg:flex-row flex-col-reverse md:items-center items-start lg:gap-6 gap-2 md:w-auto w-full">
                 <div className="flex h-10 items-center border border-primary/50 rounded-md overflow-hidden md:w-auto w-full">

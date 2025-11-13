@@ -9,6 +9,12 @@ const ProductCardSkeleton = () => {
         <div className="h-3 bg-gray-200 rounded w-full animate-pulse"></div>
         <div className="h-3 bg-gray-200 rounded w-1/2 animate-pulse"></div>
         <div className="h-6 bg-gray-200 rounded w-1/3 animate-pulse pt-2"></div>
+        <div className="flex items-center gap-2 uppercase">
+          <span
+            className={`w-6 h-6 animate-pulse bg-gray-200 rounded-full`}
+          ></span>
+          <p className='h-3 bg-gray-200 rounded w-1/2 animate-pulse'></p>
+        </div>
       </div>
       <div className="w-full p-3">
         <div className='h-10 bg-gray-200 rounded-md w-full animate-pulse'></div>

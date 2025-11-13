@@ -145,7 +145,7 @@ const Order = () => {
               <h3 className="text-lg font-bold! mt-4">Items:</h3>
               <ul>
                 {selectedOrder.items.map((item, index) => (
-                    <li key={index}>{item.product.name} (x{item.quantity}) - {formatterUtility(Number(item.price))}</li>
+                    <li key={index}>{item.product.name} (x{item.quantity}) - {item.product.color} - {formatterUtility(Number(item.price))}</li>
                 ))}
               </ul>
             </div>

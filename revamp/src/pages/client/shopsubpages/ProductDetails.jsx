@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import MiniHerosection from '../../../components/MiniHerosection';
 import { assets } from '../../../assets/assets';
 import { formatterUtility } from '../../../utilities/formatterutility';
@@ -10,9 +10,8 @@ import useCartStore from '../../../store/cartStore'; // Import useCartStore
 
 const ProductDetails = () => {
     const { id } = useParams();
-    const [selectedColor, setSelectedColor] = useState("")
-    const [productDetails, setProductDetails] = useState(null)
-    const [loadingProductDetails, setloadingProductDetails] = useState(false)
+    const [productDetails, setProductDetails] = useState(null);
+    const [loadingProductDetails, setLoadingProductDetails] = useState(false);
 
     // Access cart state and actions
     const { addToCart, addingProductId } = useCartStore();
@@ -20,13 +19,13 @@ const ProductDetails = () => {
     const isAddingToCart = addingProductId === productDetails?.id;
 
     useEffect(() => {
-        window.scroll(0, 0)
+        window.scroll(0, 0);
         document.title = "Product Details - OMC Multitech Limited";
-    }, [])
+    }, []);
 
     useEffect(() => {
         const fetchProductDetails = async () => {
-            setloadingProductDetails(true)
+            setLoadingProductDetails(true);
             try {
                 const response = await api.call(`/products/${id}`, "GET");
                 if (response.status === 200) {
@@ -36,23 +35,18 @@ const ProductDetails = () => {
                 console.error('An error occurred fetching products details', error);
                 toast.error('An error occurred fetching products details');
             } finally {
-                setloadingProductDetails(false)
+                setLoadingProductDetails(false);
             }
-        }
-        fetchProductDetails()
-    }, [id])
+        };
+        fetchProductDetails();
+    }, [id]);
 
-    const images = [assets.newsimg1, assets.newsimg2, assets.newsimg3, assets.newsimg4, assets.heroimg, assets.heroimg2, assets.heroimg3]
-    const randomIndex = Math.floor(Math.random() * images.length)
+    const images = [assets.newsimg1, assets.newsimg2, assets.newsimg3, assets.newsimg4, assets.heroimg, assets.heroimg2, assets.heroimg3];
+    const randomIndex = Math.floor(Math.random() * images.length);
 
     const handleAddToCart = () => {
-        if (!selectedColor && availableColors.length > 0) {
-            toast.error('Please select an available color first.');
-            return;
-        }
         if (productDetails) {
-            // Ensure you are passing the product object, not the color object
-            addToCart({ ...productDetails, selectedColor });
+            addToCart(productDetails); // Pass productDetails directly
         }
     };
 
@@ -62,7 +56,7 @@ const ProductDetails = () => {
         let hex = hexColor.replace('#', '');
 
         if (hex.length === 3) {
-            hex = hex.split('')?.map(char => char + char).join('');
+            hex = hex.split('').map(char => char + char).join('');
         }
 
         if (hex.length !== 6) {
@@ -78,33 +72,7 @@ const ProductDetails = () => {
         return luminance > 149 ? '#000000' : '#FFFFFF';
     };
 
-    const availableColors = useMemo(() => {
-        const colorData = productDetails?.color;
-        if (!colorData) return [];
-
-        try {
-            // 1. Attempt to parse it as JSON (e.g., '["#FF0000", "#0000FF"]')
-            const parsedColors = JSON.parse(colorData);
-            // Ensure the result is an array
-            return Array.isArray(parsedColors) ? parsedColors : [];
-        } catch (e) {
-            console.error("Error parsing color data:", e);
-            // 2. If JSON.parse fails, assume it's a single comma-separated or single string
-            if (typeof colorData === 'string' && colorData.trim() !== '') {
-                // Handle cases like "white, blue, red" or just "white"
-                return colorData.split(',').map(c => c.trim()).filter(c => c.length > 0);
-            }
-            return [];
-        }
-    }, [productDetails?.color]);
-
-    useEffect(() => {
-        if (!selectedColor && availableColors.length > 0) {
-            setSelectedColor(availableColors[0]);
-        }
-    }, [availableColors, selectedColor]);
-
-    const buttonTextColor = selectedColor ? getContrastColor(selectedColor) : '#FFFFFF';
+    const buttonTextColor = productDetails?.color ? getContrastColor(productDetails.color) : '#FFFFFF';
 
     return (
         <div>
@@ -128,23 +96,18 @@ const ProductDetails = () => {
                         <h3 className='font-[Montserrat]! font-semibold! text-2xl my-5'>{formatterUtility(Number(productDetails?.price))}</h3>
                         <p className='text-lg font-medium!'><span className="text-body_color">Size:</span> {productDetails?.size} Liters</p>
                         <div className="lg:block hidden">
-                            <div className="space-y-4 mt-3 text-body_color">
-                                <p>Available colors: <span className='font-bold! font-[Montserrat]! text-shadow-sm selected-color' style={{ color: selectedColor }}>{selectedColor}</span></p>
-                                <div className="flex flex-wrap items-center gap-4">
-                                    {
-                                        availableColors.map((c, index) => ( // <-- Use availableColors here
-                                            <div 
-                                                key={index} 
-                                                className={`w-8 h-8 cursor-pointer border border-black/20 ${selectedColor === c && "border-6 border-light rounded-full"}`}
-                                                onClick={() => setSelectedColor(c)}
-                                                style={{
-                                                    backgroundColor: c,
-                                                }}
-                                            ></div>
-                                        ))
-                                    }
-                                </div>
-                            </div>
+                            <p className='flex flex-wrap items-center gap-2'>
+                                <strong>Color:</strong>
+                                <div
+                                    title={productDetails?.color}
+                                    aria-label={productDetails?.color}
+                                    className={`w-6 h-6 cursor-pointer rounded-full border border-black/20`}
+                                    style={{
+                                        backgroundColor: productDetails?.color,
+                                    }}
+                                ></div>
+                                <p className='uppercase'>{productDetails?.color}</p>
+                            </p>
                             <div className="flex items-end gap-6 mt-8">
                                 <button
                                     type='button'
@@ -152,7 +115,7 @@ const ProductDetails = () => {
                                     disabled={isAddingToCart || loadingProductDetails}
                                     className='w-full border border-black/30 cursor-pointer font-bold! hover:bg-primary px-4 h-10 text-sm flex items-center justify-center gap-2 rounded-md transition-all duration-300'
                                     style={{
-                                        backgroundColor: selectedColor ? selectedColor : "#3b5d50",
+                                        backgroundColor: productDetails?.color ? productDetails.color : "#3b5d50",
                                         color: buttonTextColor
                                     }}
                                 >
@@ -167,23 +130,18 @@ const ProductDetails = () => {
                         </div>
                     </div>
                     <div className="md:col-span-3 lg:hidden block">
-                        <div className="space-y-4 mt-3 text-body_color">
-                            <p>Available colors: <span className='font-bold! font-[Montserrat]! text-shadow-sm selected-color' style={{ color: selectedColor }}>{selectedColor}</span></p>
-                            <div className="flex flex-wrap items-center gap-4">
-                                {
-                                    availableColors.map((c, index) => ( // <-- Use availableColors here
-                                        <div 
-                                            key={index} 
-                                            className={`w-8 h-8 cursor-pointer border border-black/20 ${selectedColor === c && "border-4 border-light rounded-full"}`}
-                                            onClick={() => setSelectedColor(c)}
-                                            style={{
-                                                backgroundColor: c,
-                                            }}
-                                        ></div>
-                                    ))
-                                }
-                            </div>
-                        </div>
+                        <p className='flex flex-wrap items-center gap-2'>
+                            <strong>Color:</strong>
+                            <div
+                                title={productDetails?.color}
+                                aria-label={productDetails?.color}
+                                className={`w-6 h-6 cursor-pointer rounded-full border border-black/20`}
+                                style={{
+                                    backgroundColor: productDetails?.color,
+                                }}
+                            ></div>
+                            <p className='uppercase'>{productDetails?.color}</p>
+                        </p>
                         <div className="flex md:flex-row flex-col md:items-end items-start gap-6 mt-8">
                             <button
                                 type='button'
@@ -191,7 +149,7 @@ const ProductDetails = () => {
                                 disabled={isAddingToCart || loadingProductDetails}
                                 className='w-full cursor-pointer font-bold! hover:bg-primary px-4 h-10 text-sm flex items-center justify-center gap-2 rounded-md transition-all duration-300'
                                 style={{
-                                    backgroundColor: selectedColor ? selectedColor : "#3b5d50",
+                                    backgroundColor: productDetails?.color ? productDetails.color : "#3b5d50",
                                     color: buttonTextColor
                                 }}
                             >
@@ -207,7 +165,7 @@ const ProductDetails = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default ProductDetails
+export default ProductDetails;

@@ -1,8 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import Modal from '../../components/modals/Modal';
 import { formatISODateToCustom, formatterUtility } from '../../utilities/formatterutility';
-import { MdRemoveRedEye, MdCheck } from 'react-icons/md';
-import { TbCancel } from "react-icons/tb";
+import { MdRemoveRedEye, MdEdit } from 'react-icons/md';
 import api from '../../api';
 import { toast } from 'sonner';
 import PaginationControls from '../../utilities/PaginationControls';
@@ -11,27 +10,25 @@ const ManageOrder = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All");
   const [orders, setOrders] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1)
-  const [lastPage, setlastPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [confirmation, setConfirmation] = useState({
+  const [updateModal, setUpdateModal] = useState({
     isOpen: false,
     order: null,
-    newStatus: null
+    newStatus: ''
   });
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const response = await api.call('/admin/orders');
-        // console.log("response", response)
         if (response.status === 200) {
           const { data, current_page, last_page } = response.data.orders;
           setOrders(data);
-          setCurrentPage(current_page)
-          setlastPage(last_page)
+          setCurrentPage(current_page);
+          setLastPage(last_page);
         }
       } catch (error) {
         toast.error('Failed to fetch orders.');
@@ -53,69 +50,59 @@ const ManageOrder = () => {
     setSelectedOrder(null);
   };
 
-  const handleStatusChangeRequest = (order, newStatus) => {
-    setConfirmation({
-        isOpen: true,
-        order,
-        newStatus
+  const openUpdateModal = (order) => {
+    setUpdateModal({
+      isOpen: true,
+      order,
+      newStatus: ''
     });
   };
 
-  const confirmStatusChange = async () => {
-    const { order, newStatus } = confirmation;
+  const closeUpdateModal = () => {
+    setUpdateModal({
+      isOpen: false,
+      order: null,
+      newStatus: ''
+    });
+  };
 
-    if (!order || !newStatus) return; // Safety check
+  const handleConfirmUpdate = async () => {
+    const { order, newStatus } = updateModal;
+
+    if (!order || !newStatus) {
+      toast.info("Please select a new status.");
+      return;
+    }
 
     try {
-      if (newStatus === 'Completed') {
-        await api.call(`/admin/orders/${order.id}/mark-paid`, 'PATCH');
-        toast.success(`Order ${order.order_number} marked as paid (Completed).`);
-      } else if (newStatus === 'Declined') {
-        // Assuming a different endpoint for declining an order, or just local update for now
-        // await api.call(`/admin/orders/${orderId}/decline`, 'PATCH');
-        toast.info(`Order ${order.order_number} status set to Declined locally.`);
-      }
-      
-      // Update local state
+      await api.call(`/admin/orders/${order.id}/status`, 'PATCH', { status: newStatus });
+      toast.success(`Order ${order.order_number} status updated to ${newStatus}.`);
       setOrders(orders.map(o => o.id === order.id ? { ...o, status: newStatus } : o));
     } catch (error) {
       toast.error(`Failed to update order ${order.order_number} status.`);
       console.error(error);
     } finally {
-        // Close and reset the confirmation state regardless of success/failure
-        setConfirmation({ isOpen: false, order: null, newStatus: null });
-        closeModal(); // Close the detail modal if it was open
+      closeUpdateModal();
     }
   };
 
-  const cancelStatusChange = () => {
-    setConfirmation({ isOpen: false, order: null, newStatus: null });
+  const getAvailableStatuses = (currentStatus) => {
+    if (['cancelled', 'delivered'].includes(currentStatus)) {
+      return [];
+    }
+    if (currentStatus === 'shipped') {
+      return ['delivered'];
+    }
+    if (['pending', 'paid'].includes(currentStatus)) {
+      return ['shipped', 'cancelled'];
+    }
+    return [];
   };
-  // const handleStatusChange = async (orderId, newStatus) => {
-  //   try {
-  //     if (newStatus === 'Completed') {
-  //       await api.call(`/admin/orders/${orderId}/mark-paid`, 'PATCH');
-  //       toast.success(`Order ${orderId} marked as paid.`);
-  //     } else if (newStatus === 'Declined') {
-  //       // Assuming a different endpoint for declining an order, or just local update for now
-  //       // await api.call(`/admin/orders/${orderId}/decline`, 'PATCH');
-  //       toast.info(`Order ${orderId} status set to Declined locally.`);
-  //     }
-  //     setOrders(orders.map(order => order.id === orderId ? { ...order, status: newStatus } : order));
-  //   } catch (error) {
-  //     toast.error(`Failed to update order ${orderId} status.`);
-  //     console.error(error);
-  //   }
-  // };
 
   const filteredOrders = useMemo(() => {
-    return orders
-      .filter(order => 
-        order.order_number.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-      // .filter(order => 
-      //   statusFilter === 'All' || order.status === statusFilter
-      // );
+    return orders.filter(order =>
+      order.order_number.toLowerCase().includes(searchQuery.toLowerCase())
+    );
   }, [orders, searchQuery]);
 
   if (loading) {
@@ -125,26 +112,14 @@ const ManageOrder = () => {
   return (
     <div className="bg-white rounded-2xl p-6">
       <div className="flex justify-between items-center mb-4">
-        <div className="lg:w-1/3 md:w-1/22 w-full">
-            <input 
-                type="text"
-                placeholder="Search by Order ID..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="border border-primary/30 placeholder:text-black/30 indent-3 rounded-md outline-0 py-2 w-full text-sm"
-            />
-        </div>
-        <div hidden>
-            <select 
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="border border-primary/30 px-3 rounded-md outline-0 py-2"
-            >
-                <option value="All">All Statuses</option>
-                <option value="Pending">Pending</option>
-                <option value="Completed">Completed</option>
-                <option value="Declined">Declined</option>
-            </select>
+        <div className="lg:w-1/3 md:w-1/2 w-full">
+          <input
+            type="text"
+            placeholder="Search by Order ID..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="border border-primary/30 placeholder:text-black/30 indent-3 rounded-md outline-0 py-2 w-full text-sm"
+          />
         </div>
       </div>
 
@@ -164,37 +139,30 @@ const ManageOrder = () => {
           <tbody>
             {filteredOrders.map((order, index) => (
               <tr key={order.id} className='last:border-b-0 border-b border-black/20'>
-                <td className="p-4 text-xs text-start">{String(index+1).padStart(3, "0")}</td>
+                <td className="p-4 text-xs text-start">{String(index + 1).padStart(3, "0")}</td>
                 <td className="p-4 text-xs text-center">{order.order_number}</td>
                 <td className="p-4 text-xs text-center">{order.user.name}</td>
                 <td className="p-4 text-xs text-center">{formatterUtility(Number(order.total_amount))}</td>
-                <td className="p-4 text-xs text-center capitalize">
-                  {order.status}
-                </td>
+                <td className="p-4 text-xs text-center capitalize">{order.status}</td>
                 <td className="p-4 text-xs text-center">
                   <p>{formatISODateToCustom(order.created_at).split(" ")[0]}</p>
                   <p>{formatISODateToCustom(order.created_at).split(" ")[1]}</p>
                 </td>
                 <td className="p-4 text-xs">
                   <div className="flex items-center justify-end gap-2">
-                    <button 
-                      onClick={() => openModal(order)} 
+                    <button
+                      onClick={() => openModal(order)}
                       className="cursor-pointer bg-blue-500 text-white text-md h-8 w-8 flex items-center justify-center rounded"
                     >
-                      <MdRemoveRedEye/>
+                      <MdRemoveRedEye />
                     </button>
-                    <button 
-                      onClick={() => handleStatusChangeRequest(order, 'Completed')} 
+                    <button
+                      onClick={() => openUpdateModal(order)}
                       className="cursor-pointer bg-green-500 text-white text-md h-8 w-8 flex items-center justify-center rounded"
+                      disabled={getAvailableStatuses(order.status).length === 0}
                     >
-                      <MdCheck/>
+                      <MdEdit />
                     </button>
-                    {/* <button 
-                      onClick={() => handleStatusChangeRequest(order.id, 'Declined')} 
-                      className="cursor-pointer bg-red-500 text-white text-md h-8 w-8 flex items-center justify-center rounded"
-                    >
-                      <TbCancel/>
-                    </button> */}
                   </div>
                 </td>
               </tr>
@@ -203,7 +171,7 @@ const ManageOrder = () => {
           <tfoot>
             <tr>
               <td colSpan={7}>
-                <PaginationControls 
+                <PaginationControls
                   currentPage={currentPage}
                   totalPages={lastPage}
                   setCurrentPage={setCurrentPage}
@@ -216,54 +184,61 @@ const ManageOrder = () => {
 
       {isModalOpen && selectedOrder && (
         <Modal onClose={closeModal}>
-            <div className='space-y-2'>
-              <h2 className="text-xl font-bold mb-4">Order Details ({selectedOrder.order_number})</h2>
-              <p><strong>Customer Name:</strong> {selectedOrder.user.name}</p>
-              <p><strong>Email:</strong> {selectedOrder.user.email}</p>
-              <p><strong>Phone:</strong> {selectedOrder.user.phone}</p>
-              <p><strong>Address:</strong> {selectedOrder.address.address_line}</p>
-              <p><strong>Date:</strong> {formatISODateToCustom(selectedOrder.created_at)}</p>
-              <p><strong>Total:</strong> {formatterUtility(Number(selectedOrder.total_amount))}</p>
-              <p className='capitalize'><strong>Status:</strong> {selectedOrder.status}</p>
-              <h3 className="text-lg font-bold mt-4">Items:</h3>
-              <ul>
-                {selectedOrder.items.map((item, index) => (
-                    <li key={index}>{item.product.name} (x{item.quantity}) - {formatterUtility(Number(item.price))}</li>
-                ))}
-              </ul>
-            </div>
+          <div className='space-y-2'>
+            <h2 className="text-xl font-bold mb-4">Order Details ({selectedOrder.order_number})</h2>
+            <p><strong>Customer Name:</strong> {selectedOrder.user.name}</p>
+            <p><strong>Email:</strong> {selectedOrder.user.email}</p>
+            <p><strong>Phone:</strong> {selectedOrder.user.phone}</p>
+            <p><strong>Address:</strong> {selectedOrder.address.address_line}</p>
+            <p><strong>Date:</strong> {formatISODateToCustom(selectedOrder.created_at)}</p>
+            <p><strong>Total:</strong> {formatterUtility(Number(selectedOrder.total_amount))}</p>
+            <p className='capitalize'><strong>Status:</strong> {selectedOrder.status}</p>
+            <h3 className="text-lg font-bold mt-4">Items:</h3>
+            <ul>
+              {selectedOrder.items.map((item, index) => (
+                <li key={index}>{item.product.name} (x{item.quantity}) - {formatterUtility(Number(item.price))}</li>
+              ))}
+            </ul>
+          </div>
         </Modal>
       )}
 
-      {confirmation.isOpen && (
-        <Modal onClose={cancelStatusChange}>
-            <div className='space-y-4'>
-                <h2 className="text-xl font-bold">Confirm Order Status Change</h2>
-                <p>
-                    Are you sure you want to change **Order ID: {confirmation.order.order_number}** to status: <span className='font-semibold capitalize'>"{confirmation.newStatus}"</span>?
-                </p>
-                {confirmation.newStatus === 'Completed' && (
-                    <p className='text-sm text-gray-600'>
-                        This action will mark the order as paid and completed.
-                    </p>
-                )}
-                <div className="flex justify-end gap-3 pt-2">
-                    <button
-                        onClick={cancelStatusChange}
-                        className="px-4 py-2 text-sm font-semibold rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        onClick={confirmStatusChange}
-                        className={`px-4 py-2 text-sm font-semibold rounded-lg text-white transition ${
-                            confirmation.newStatus === 'Completed' ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'
-                        }`}
-                    >
-                        Confirm {confirmation.newStatus}
-                    </button>
-                </div>
+      {updateModal.isOpen && (
+        <Modal onClose={closeUpdateModal}>
+          <div className='space-y-4'>
+            <h2 className="text-xl font-bold">Update Order Status</h2>
+            <p>
+              Change status for **Order ID: {updateModal.order.order_number}**
+            </p>
+            <div>
+              <label htmlFor="status-select" className="block text-sm font-medium text-gray-700">New Status</label>
+              <select
+                id="status-select"
+                value={updateModal.newStatus}
+                onChange={(e) => setUpdateModal({ ...updateModal, newStatus: e.target.value })}
+                className="mt-1 block w-full pl-3 pr-10 py-3 text-base border border-gray-500 focus:outline-none capitalize sm:text-sm rounded-md"
+              >
+                <option value="" disabled>Select a status</option>
+                {getAvailableStatuses(updateModal.order.status).map(status => (
+                  <option key={status} value={status} className='capitalize'>{status}</option>
+                ))}
+              </select>
             </div>
+            <div className="flex justify-end gap-3 pt-2">
+              <button
+                onClick={closeUpdateModal}
+                className="px-4 py-3 text-sm font-semibold rounded-md cursor-pointer border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmUpdate}
+                className="px-4 py-3 text-sm font-semibold rounded-md cursor-pointer text-white bg-primary transition"
+              >
+                Confirm Update
+              </button>
+            </div>
+          </div>
         </Modal>
       )}
     </div>

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import useCartStore from '../../store/cartStore';
 
 const ProductCard = (props) => {
-    const { id, name, description, price, image } = props;
+    const { id, name, description, price, image, color } = props;
     const { loadingProductId } = useCartStore();
 
     const isLoading = loadingProductId === id;
@@ -29,6 +29,15 @@ const ProductCard = (props) => {
                     <h3 className='text-lg font-medium!'>{name}</h3>
                     <p className='text-xs line-clamp-3'>{description}</p>
                     <h3 className='font-bold! pt-2 text-xl font-[Montserrat]!'>{formatterUtility(Number(price))}</h3>
+                    <div className="flex items-center gap-2 uppercase">
+                        <span
+                            className={`w-4 h-4 cursor-pointer border border-black/20 rounded-full`}
+                            style={{
+                                backgroundColor: color,
+                            }}
+                        ></span>
+                        <p>{color}</p>
+                    </div>
                 </div>
                 <button
                     type='button'

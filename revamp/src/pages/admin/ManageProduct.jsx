@@ -10,30 +10,16 @@ import PaginationControls from '../../utilities/PaginationControls';
 
 // Update Form Component
 const UpdateProductForm = ({ product, onUpdate, onClose }) => {
-    const [currentColor, setCurrentColor] = useState("");
-
-    // Safely parse the color string into an array for initialization
-    let initialColors = [];
-    try {
-        if (typeof product.color === 'string') {
-            initialColors = JSON.parse(product.color);
-        } else if (Array.isArray(product.color)) {
-            initialColors = product.color;
-        }
-    } catch (e) {
-        console.error("Failed to parse product colors", e);
-    }
-
     const formik = useFormik({
         initialValues: {
             id: product.id,
             name: product.name || "",
             description: product.description || "",
-            color: initialColors,
+            color: product.color || "",
             size: product.size || "",
             price: product.price || "",
             stock: product.stock || "",
-            image: "", // Image is optional on update, so initial is empty
+            image: "",
         },
         validationSchema: Yup.object({
             name: Yup.string().required("Product name is required"),
@@ -41,20 +27,21 @@ const UpdateProductForm = ({ product, onUpdate, onClose }) => {
             size: Yup.string().required("Product size is required"),
             price: Yup.number().positive("Price must be positive").required("Price is required"),
             stock: Yup.number().integer("stock must be an integer").positive("stock must be positive").required("stock is required"),
-            color: Yup.array().of(Yup.string()).min(1, "At least one color is required"),
+            color: Yup.string()
+                .required("Color is required")
+                .test(
+                    'is-valid-color',
+                    'Must be a valid hex code (e.g., #FFF) or color name (e.g., white)',
+                    (value) => !!value && (/(^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$)|(^[a-zA-Z]+$)/i.test(value))
+                ),
             image: Yup.mixed().optional(), // Image is not required for updates
         }),
         onSubmit: async (values) => {
-            const submissionData = {
-                ...values,
-                color: JSON.stringify(values.color) // Stringify colors for the backend
-            };
-
             try {
-                const response = await api.call(`/products/${values.id}`, "POST", submissionData);
+                const response = await api.call(`/products/${values.id}`, "POST", values);
                 if (response) { // Assuming response is truthy on success
                     toast.success("Product updated successfully");
-                    onUpdate({ ...values, color: JSON.stringify(values.color) }); // Pass stringified colors back to parent
+                    onUpdate(values); // Pass stringified colors back to parent
                     onClose(); // Close the modal
                 }
             } catch (error) {
@@ -63,22 +50,6 @@ const UpdateProductForm = ({ product, onUpdate, onClose }) => {
             }
         }
     });
-
-    const handleAddColor = () => {
-        if (currentColor && /^#([0-9A-F]{3}){1,2}$/i.test(currentColor)) {
-            formik.setFieldValue('color', [...formik.values.color, currentColor]);
-            setCurrentColor("");
-        } else {
-            toast.info("Please enter a valid hex code (e.g., #RRGGBB or #RGB).");
-        }
-    };
-
-    const handleRemoveColor = (indexToRemove) => {
-        formik.setFieldValue(
-            'color',
-            formik.values.color.filter((_, index) => index !== indexToRemove)
-        );
-    };
 
     return (
         <>
@@ -128,22 +99,8 @@ const UpdateProductForm = ({ product, onUpdate, onClose }) => {
                 {/* Color */}
                 <div>
                     <label className="block text-xs font-medium text-gray-700">Color</label>
-                    <div className="mt-1 flex items-center space-x-2">
-                        <input type="text" className="block w-full placeholder:text-black/50 text-xs border border-primary/20 rounded-md indent-3 py-2 outline-0" placeholder="#FFFFFF" value={currentColor} onChange={(e) => setCurrentColor(e.target.value)} />
-                        <button type="button" onClick={handleAddColor} className="px-4 py-2 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-secondary focus:outline-none cursor-pointer">Add</button>
-                    </div>
+                    <input type="text" name="color" id="color" className="block w-full placeholder:text-black/50 text-xs border border-primary/20 rounded-md indent-3 py-2 outline-0" placeholder="e.g., #FFFFFF or white" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.color} />
                     {formik.touched.color && formik.errors.color ? (<p className="mt-2 text-xs text-red-600">{formik.errors.color}</p>) : null}
-                    <div className="mt-4 flex flex-wrap gap-3">
-                        {formik.values.color.map((c, index) => (
-                            <div key={index} className="flex items-center gap-2 p-1 border border-black/20 rounded-full">
-                                <div className="w-6 h-6 rounded-full border border-black/20" style={{ backgroundColor: c }}></div>
-                                <span className="text-xs">{c}</span>
-                                <button type="button" onClick={() => handleRemoveColor(index)} className="text-gray-400 hover:text-gray-600">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                                </button>
-                            </div>
-                        ))}
-                    </div>
                 </div>
 
                 {/* Submit Button */}
@@ -154,7 +111,7 @@ const UpdateProductForm = ({ product, onUpdate, onClose }) => {
                 </div>
             </form>
         </>
-    );
+    ); 
 };
 
 const ManageProduct = () => {
@@ -227,6 +184,7 @@ const ManageProduct = () => {
                             <th className="p-4 uppercase font-[Montserrat]! font-semibold! text-dark/80 text-xs text-start">S/N</th>
                             <th className="p-4 uppercase font-[Montserrat]! font-semibold! text-dark/80 text-xs text-center">Product</th>
                             <th className="p-4 uppercase font-[Montserrat]! font-semibold! text-dark/80 text-xs text-center">Price</th>
+                            <th className="p-4 uppercase font-[Montserrat]! font-semibold! text-dark/80 text-xs text-center">Color</th>
                             <th className="p-4 uppercase font-[Montserrat]! font-semibold! text-dark/80 text-xs text-center">In Stock</th>
                             <th className="p-4 uppercase font-[Montserrat]! font-semibold! text-dark/80 text-xs text-center">Date Added</th>
                             <th className="p-4 uppercase font-[Montserrat]! font-semibold! text-dark/80 text-xs text-end">Actions</th>
@@ -235,7 +193,7 @@ const ManageProduct = () => {
                     <tbody>
                         {products.length === 0 ? (
                             <tr>
-                                <td colSpan={6} className='text-center p-5 text-gray-600'>No Products found</td>
+                                <td colSpan={7} className='text-center p-5 text-gray-600'>No Products found</td>
                             </tr>
                         ) : (
                             products.map((product, index) => (
@@ -243,11 +201,24 @@ const ManageProduct = () => {
                                 <td className="px-4 py-2 text-start">{String(index+1).padStart(3, "0")}</td>
                                 <td className="px-4 py-2">
                                   <div className='flex items-center gap-4'>
-                                    <img src={product.image} alt={product.name} className="w-10 h-10 rounded-full border border-black/50 object-cover" />
-                                    <p>{product.name}</p>
+                                    <div className="w-10 h-10 rounded-full border border-black/50 overflow-hidden">
+                                        <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                                    </div>
+                                    <span className='w-[calc(100%-56px)]'>{product.name}</span>
                                   </div>
                                 </td>
                                 <td className="px-4 py-2 text-center">{formatterUtility(Number(product.price))}</td>
+                                <td className="px-4 py-2 text-center">
+                                    <div className="flex items-center gap-2 uppercase">
+                                        <span
+                                            className={`w-4 h-4 cursor-pointer border border-black/20 rounded-full`}
+                                            style={{
+                                                backgroundColor: product.color,
+                                            }}
+                                        ></span>
+                                        <p>{product.color}</p>
+                                    </div>
+                                </td>
                                 <td className="px-4 py-2 text-center">{formatterUtility(Number(product.stock), true)}</td>
                                 <td className="px-4 py-2 text-center">{formatISODateToCustom(product.created_at)}</td>
                                 <td className="px-4 py-2 text-center">
@@ -262,7 +233,7 @@ const ManageProduct = () => {
                     </tbody>
                     <tfoot>
                       <tr>
-                        <td colSpan={6}>
+                        <td colSpan={7}>
                           <PaginationControls 
                             currentPage={currentPage}
                             totalPages={lastPage}
@@ -279,32 +250,26 @@ const ManageProduct = () => {
                     {modalType === 'view' && (
                         <div>
                             <h2 className="text-xl font-bold mb-4">{selectedProduct.name}</h2>
-                            <div className="flex md:flex-row flex-col gap-4 text-xs items-center">
-                              <div className="w-[200px] h-[200px] rounded-xl overflow-hidden">
+                            <div className="flex md:flex-row flex-col gap-4 text-xs md:items-center items-start">
+                              <div className="md:w-[200px] w-full h-[200px] rounded-xl overflow-hidden">
                                 <img src={selectedProduct.image} alt={selectedProduct.name} className="w-full h-full object-cover" />
                               </div>
-                              <div className='w-[calc(100%-200px)] space-y-1'>
+                              <div className='md:w-[calc(100%-200px)] space-y-2'>
                                 <p><strong>Price:</strong> {formatterUtility(Number(selectedProduct.price))}</p>
                                 <p><strong>Description:</strong> {selectedProduct.description}</p>
                                 <p><strong>Size:</strong> {selectedProduct.size} Liters</p>
                                 <p><strong>In stock:</strong> {selectedProduct.stock}</p>
-                                <p className='flex flex-wrap items-center gap-2'><strong>Color:</strong> 
-                                  <div className='flex flex-wrap gap-2'>
-                                    {
-                                      JSON.parse(selectedProduct.color).map((c, index) => (
-                                        <div 
-                                          key={index} 
-                                          title={c}
-                                          aria-label={c}
-                                          className={`w-6 h-6 cursor-pointer rounded-full border border-black/20`}
-                                          style={{
-                                            backgroundColor: c,
-                                          }}
-                                        ></div>
-
-                                      ))
-                                    }
-                                  </div>
+                                <p className='flex flex-wrap items-center gap-2'>
+                                    <strong>Color:</strong> 
+                                    <div 
+                                        title={selectedProduct.color}
+                                        aria-label={selectedProduct.color}
+                                        className={`w-4 h-4 cursor-pointer rounded-full border border-black/20`}
+                                        style={{
+                                            backgroundColor: selectedProduct.color,
+                                        }}
+                                    ></div>
+                                    <p className='uppercase'>{selectedProduct.color}</p>
                                 </p>
                               </div>
                             </div>

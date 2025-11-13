@@ -51,6 +51,7 @@ const Cart = () => {
                     price={item.product.price}
                     image={item.product.image}
                     quantity={item.quantity}
+                    color={item.product.color}
                     removeFromCart={removeFromCart} 
                   />
                 ))}

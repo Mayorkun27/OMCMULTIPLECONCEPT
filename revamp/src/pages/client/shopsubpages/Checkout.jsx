@@ -118,7 +118,7 @@ const Checkout = () => {
         }, 1000)
       }
     }
-  }, [formik.values.country, countries, formik]);
+  }, [formik.values.country, countries]);
 
   useEffect(() => {
     if (formik.values.state) {
@@ -140,7 +140,7 @@ const Checkout = () => {
       };
       fetchCities();
     }
-  }, [formik.values.state, formik.values.country, formik]);
+  }, [formik.values.state, formik.values.country]);
   
   return (
     <div>

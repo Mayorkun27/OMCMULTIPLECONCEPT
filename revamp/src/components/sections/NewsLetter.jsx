@@ -25,7 +25,7 @@ const NewsLetter = () => {
           toast.error(response.data.message || "Subscription failed. Please try again.");
         }
       } catch (error) {
-        toast.error(error.message || "An error occurred. Please try again.");
+        toast.error(error?.response?.data?.message || error.message || "An error occurred. Please try again.");
       } finally {
         setSubmitting(false);
       }
