@@ -25,7 +25,7 @@ const CartCard = ({ id, name, price, image, quantity, color, removeFromCart }) =
         </div>
         <div className="w-full flex md:flex-row flex-col md:items-center items-start gap-2 justify-between">
             <div className="flex flex-col font-medium items-start">
-                <p className='md:text-lg text-sm font-medium! font-[Montserrat]! underline'>{name}</p>
+                <p className='md:text-lg text-sm font-medium! font-[Montserrat]! capitalize underline'>{name}</p>
                 <div className='text-sm font-medium! font-[Montserrat]! flex items-center gap-1'>
                     <div
                         title={color}
