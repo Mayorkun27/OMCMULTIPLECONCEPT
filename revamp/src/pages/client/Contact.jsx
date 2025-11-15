@@ -6,6 +6,8 @@ import * as Yup from "yup";
 import { FaPaperPlane } from 'react-icons/fa';
 import { MdLocationPin, MdMail, MdPhone } from 'react-icons/md';
 import { LuLoaderCircle } from "react-icons/lu";
+import api from '../../api';
+import { toast } from 'sonner';
 
 const Contact = () => {
 
@@ -15,24 +17,40 @@ const Contact = () => {
 
   const formik = useFormik({
     initialValues: {
-      firstName: "",
-      lastName: "",
+      first_name: "",
+      last_name: "",
       email: "",
+      address: "",
       message: "",
     },
     validationSchema: Yup.object({
-      firstName: Yup.string()
+      first_name: Yup.string()
         .required("First Name is required"),
-      lastName: Yup.string()
+      last_name: Yup.string()
         .required("Last Name is required"),
       email: Yup.string()
         .email("Invalid email address")
         .required("Email Address is required"),
+      address: Yup.string()
+        .required("Address is required"),
       message: Yup.string()
         .required("Message is required"),
     }),
-    onSubmit: async (values) => {
+    onSubmit: async (values, { resetForm, setSubmitting }) => {
       console.log(values)
+      try {
+        const response = await api.call("/contact", "POST", values);
+        if (response.status === 201 || response.status === 200) {
+          toast.success("Your message has been sent successfully!");
+          resetForm();
+        } else {
+          toast.error(response.data.message || "Subscription failed. Please try again.");
+        }
+      } catch (error) {
+        toast.error(typeof error === "string" && error || error?.response?.data?.message || error.message || "An error occurred. Please try again.");
+      } finally {
+        setSubmitting(false);
+      }
     }
   })
 
@@ -78,33 +96,33 @@ const Contact = () => {
           </div>
           <form onSubmit={formik.handleSubmit} className='md:col-span-2 rounded-2xl bg-white shadow-md md:p-8 p-4 space-y-4 grid md:grid-cols-2 gap-y-2 gap-x-6'>
             <div className="flex flex-col gap-1">
-              <label className="font-[Montserrat]! font-medium!" htmlFor="firstName">Enter your First Name</label>
+              <label className="font-[Montserrat]! font-medium!" htmlFor="first_name">Enter your First Name</label>
               <input 
                 type="text" 
-                name="firstName" 
-                id="firstName" 
+                name="first_name" 
+                id="first_name" 
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 className='border border-primary indent-2 rounded-md outline-0 py-2'
               />
-              {formik.touched.firstName && formik.errors.firstName && (<p className='text-red-600 text-sm'>{formik.errors.firstName}</p>)}
+              {formik.touched.first_name && formik.errors.first_name && (<p className='text-red-600 text-sm'>{formik.errors.first_name}</p>)}
             </div>
             <div className="flex flex-col gap-1">
-              <label className="font-[Montserrat]! font-medium!" htmlFor="lastName">Enter your Last Name</label>
+              <label className="font-[Montserrat]! font-medium!" htmlFor="last_name">Enter your Last Name</label>
               <input 
                 type="text" 
-                name="lastName" 
-                id="lastName" 
+                name="last_name" 
+                id="last_name" 
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 className='border border-primary indent-2 rounded-md outline-0 py-2'
               />
-              {formik.touched.lastName && formik.errors.lastName && (<p className='text-red-600 text-sm'>{formik.errors.lastName}</p>)}
+              {formik.touched.last_name && formik.errors.last_name && (<p className='text-red-600 text-sm'>{formik.errors.last_name}</p>)}
             </div>
             <div className="flex flex-col gap-1 md:col-span-2">
               <label className="font-[Montserrat]! font-medium!" htmlFor="email">Enter your email address</label>
               <input 
-                type="text" 
+                type="email" 
                 name="email" 
                 id="email" 
                 onChange={formik.handleChange}
@@ -114,7 +132,19 @@ const Contact = () => {
               {formik.touched.email && formik.errors.email && (<p className='text-red-600 text-sm'>{formik.errors.email}</p>)}
             </div>
             <div className="flex flex-col gap-1 md:col-span-2">
-              <label className="font-[Montserrat]! font-medium!" htmlFor="message">Enter your message address</label>
+              <label className="font-[Montserrat]! font-medium!" htmlFor="address">Enter your address</label>
+              <input 
+                type="text" 
+                name="address" 
+                id="address" 
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                className='border border-primary indent-2 rounded-md outline-0 py-2'
+              />
+              {formik.touched.address && formik.errors.address && (<p className='text-red-600 text-sm'>{formik.errors.address}</p>)}
+            </div>
+            <div className="flex flex-col gap-1 md:col-span-2">
+              <label className="font-[Montserrat]! font-medium!" htmlFor="message">Enter your message</label>
               <textarea
                 rows={5}
                 name="message" 

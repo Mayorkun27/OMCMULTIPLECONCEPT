@@ -18,6 +18,7 @@ const NewsLetter = () => {
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
         const response = await api.call("/subscribe", "POST", values);
+        console.log("response", response)
         if (response.status === 200) {
           toast.success("Thank you for subscribing!");
           resetForm();
@@ -25,7 +26,7 @@ const NewsLetter = () => {
           toast.error(response.data.message || "Subscription failed. Please try again.");
         }
       } catch (error) {
-        toast.error(error?.response?.data?.message || error.message || "An error occurred. Please try again.");
+        toast.error(typeof error === "string" && error || error?.response?.data?.message || error.message || "An error occurred. Please try again.");
       } finally {
         setSubmitting(false);
       }

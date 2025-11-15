@@ -18,6 +18,7 @@ import ManageOrder from "./pages/admin/ManageOrder";
 import AdminLayout from "./layout/AdminLayout";
 import AddProduct from "./pages/admin/AddProduct";
 import Subscribers from "./pages/admin/Subscribers";
+import ManageContact from "./pages/admin/ManageContact";
 
 function App() {
   
@@ -88,6 +89,10 @@ function App() {
         <Route 
           path="/admin/subscribers"
           element={<AdminLayout children={<Subscribers />} pageName="Manage Orders" />}
+        />
+        <Route 
+          path="/admin/contact"
+          element={<AdminLayout children={<ManageContact />} pageName="Manage Contact" />}
         />
       </Routes>
     </>

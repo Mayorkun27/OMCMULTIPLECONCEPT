@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { MdProductionQuantityLimits, MdBookmarkBorder, MdOutlineLogout, MdHome } from "react-icons/md";
+import { MdProductionQuantityLimits, MdBookmarkBorder, MdOutlineLogout, MdHome, MdContacts } from "react-icons/md";
 import { AiOutlineProduct } from "react-icons/ai";
 import { FaBars } from 'react-icons/fa';
 import { FaXmark } from "react-icons/fa6";
@@ -47,6 +47,11 @@ const AdminLayout = ({ children, pageName }) => {
             path: "/admin/subscribers",
             name: "Subscribers",
             icon: <GoChecklist />
+        },
+        {
+            path: "/admin/contact",
+            name: "Manage contact",
+            icon: <MdContacts />
         },
     ]
 
