@@ -123,10 +123,12 @@ const ManageProduct = () => {
     const [currentPage, setCurrentPage] = useState(1)
     const [lastPage, setlastPage] = useState(1)
 
+    const itemsPerPage = 8
+
     useEffect(() => {
       const fetchProducts = async () => {
         try {
-          const response = await api.call(`/products`, 'GET');
+          const response = await api.call(`/products?page=${currentPage}&per_page=${itemsPerPage}`, 'GET');
           // console.log(response)
           if (response.status === 200) {
             const { data, current_page, last_page } = response.data.data;
@@ -142,7 +144,7 @@ const ManageProduct = () => {
       };
 
       fetchProducts()
-    }, [])
+    }, [currentPage])
 
     const handleUpdateProduct = (updatedProduct) => {
       setProducts(products.map(p => p.id === updatedProduct.id ? { ...p, ...updatedProduct } : p));
@@ -182,7 +184,7 @@ const ManageProduct = () => {
                     <thead>
                         <tr className='border-b border-black/20'>
                             <th className="p-4 uppercase font-[Montserrat]! font-semibold! text-dark/80 text-xs text-start">S/N</th>
-                            <th className="p-4 uppercase font-[Montserrat]! font-semibold! text-dark/80 text-xs text-center">Product</th>
+                            <th className="p-4 uppercase font-[Montserrat]! font-semibold! text-dark/80 text-xs text-start">Product</th>
                             <th className="p-4 uppercase font-[Montserrat]! font-semibold! text-dark/80 text-xs text-center">Price</th>
                             <th className="p-4 uppercase font-[Montserrat]! font-semibold! text-dark/80 text-xs text-center">Color</th>
                             <th className="p-4 uppercase font-[Montserrat]! font-semibold! text-dark/80 text-xs text-center">In Stock</th>
@@ -196,44 +198,48 @@ const ManageProduct = () => {
                                 <td colSpan={7} className='text-center p-5 text-gray-600'>No Products found</td>
                             </tr>
                         ) : (
-                            products.map((product, index) => (
-                            <tr key={product.id} className='last:border-b-0 border-b text-xs border-black/20'>
-                                <td className="px-4 py-2 text-start">{String(index+1).padStart(3, "0")}</td>
-                                <td className="px-4 py-2">
-                                  <div className='flex items-center gap-4'>
-                                    <div className="w-10 h-10 rounded-full border border-black/50 overflow-hidden">
-                                        <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
-                                    </div>
-                                    <span className='w-[calc(100%-56px)]'>{product.name}</span>
-                                  </div>
-                                </td>
-                                <td className="px-4 py-2 text-center">{formatterUtility(Number(product.price))}</td>
-                                <td className="px-4 py-2 text-center">
-                                    <div className="flex items-center gap-2 uppercase">
-                                        <span
-                                            className={`w-4 h-4 cursor-pointer border border-black/20 rounded-full`}
-                                            style={{
-                                                backgroundColor: product.color,
-                                            }}
-                                        ></span>
-                                        <p>{product.color}</p>
-                                    </div>
-                                </td>
-                                <td className="px-4 py-2 text-center">{formatterUtility(Number(product.stock), true)}</td>
-                                <td className="px-4 py-2 text-center">{formatISODateToCustom(product.created_at)}</td>
-                                <td className="px-4 py-2 text-center">
-                                    <div className="flex items-center justify-end gap-2">
-                                        <button onClick={() => openModal('view', product)} className="cursor-pointer bg-blue-500 text-white h-8 w-8 flex items-center justify-center rounded"><MdRemoveRedEye /></button>
-                                        <button onClick={() => openModal('update', product)} className="cursor-pointer bg-yellow-500 text-white h-8 w-8 flex items-center justify-center rounded"><MdEdit /></button>
-                                        <button onClick={() => openModal('delete', product)} className="cursor-pointer bg-red-500 text-white h-8 w-8 flex items-center justify-center rounded"><MdDelete /></button>
-                                    </div>
-                                </td>
-                            </tr>
-                        )))}
+                            products.map((product, index) => {
+                                const serialNumber = (currentPage - 1) * itemsPerPage + index + 1
+                                return (
+                                    <tr key={product.id} className='last:border-b-0 border-b text-xs border-black/20'>
+                                        <td className="px-4 py-2 text-start">{String(serialNumber).padStart(3, "0")}</td>
+                                        <td className="px-4 py-2">
+                                        <div className='flex items-center gap-4'>
+                                            <div className="w-10 h-10 rounded-full border border-black/50 overflow-hidden">
+                                                <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                                            </div>
+                                            <span className='w-[calc(100%-56px)]'>{product.name}</span>
+                                        </div>
+                                        </td>
+                                        <td className="px-4 py-2 text-center">{formatterUtility(Number(product.price))}</td>
+                                        <td className="px-4 py-2 text-center">
+                                            <div className="flex justify-center items-center gap-2 uppercase">
+                                                <span
+                                                    className={`w-4 h-4 cursor-pointer border border-black/20 rounded-full`}
+                                                    style={{
+                                                        backgroundColor: product.color,
+                                                    }}
+                                                ></span>
+                                                <p>{product.color}</p>
+                                            </div>
+                                        </td>
+                                        <td className="px-4 py-2 text-center">{formatterUtility(Number(product.stock), true)}</td>
+                                        <td className="px-4 py-2 text-center">{formatISODateToCustom(product.created_at)}</td>
+                                        <td className="px-4 py-2 text-center">
+                                            <div className="flex items-center justify-end gap-2">
+                                                <button onClick={() => openModal('view', product)} className="cursor-pointer bg-blue-500 text-white h-8 w-8 flex items-center justify-center rounded"><MdRemoveRedEye /></button>
+                                                <button onClick={() => openModal('update', product)} className="cursor-pointer bg-yellow-500 text-white h-8 w-8 flex items-center justify-center rounded"><MdEdit /></button>
+                                                <button onClick={() => openModal('delete', product)} className="cursor-pointer bg-red-500 text-white h-8 w-8 flex items-center justify-center rounded"><MdDelete /></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                )
+                            }
+                        ))}
                     </tbody>
                     <tfoot>
-                      <tr>
-                        <td colSpan={7}>
+                      <tr className='border-t border-primary/20'>
+                        <td colSpan={7} className='py-4'>
                           <PaginationControls 
                             currentPage={currentPage}
                             totalPages={lastPage}

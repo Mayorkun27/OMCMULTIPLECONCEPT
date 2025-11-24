@@ -8,6 +8,27 @@ import { toast } from 'sonner';
 import api from '../../../api';
 import useCartStore from '../../../store/cartStore'; // Import useCartStore
 
+const colorNameToHex = {
+    "black": "#000000",
+    "silver": "#C0C0C0",
+    "gray": "#808080",
+    "white": "#FFFFFF",
+    "maroon": "#800000",
+    "red": "#FF0000",
+    "purple": "#800080",
+    "fuchsia": "#FF00FF",
+    "green": "#008000",
+    "lime": "#00FF00",
+    "olive": "#808000",
+    "yellow": "#FFFF00",
+    "navy": "#000080",
+    "blue": "#0000FF",
+    "teal": "#008080",
+    "aqua": "#00FFFF",
+    "orange": "#FFA500",
+    // Add more common color names as needed
+};
+
 const ProductDetails = () => {
     const { id } = useParams();
     const [productDetails, setProductDetails] = useState(null);
@@ -50,25 +71,37 @@ const ProductDetails = () => {
         }
     };
 
-    const getContrastColor = (hexColor) => {
-        if (!hexColor) return '#FFFFFF';
+    const getContrastColor = (colorInput) => {
+        if (!colorInput) return '#FFFFFF';
 
-        let hex = hexColor.replace('#', '');
+        let hex = colorInput.toLowerCase();
 
+        // Convert color name to hex if it's a known name
+        if (colorNameToHex[hex]) {
+            hex = colorNameToHex[hex];
+        }
+
+        // Remove '#' if present
+        hex = hex.replace('#', '');
+
+        // Handle 3-digit hex codes
         if (hex.length === 3) {
             hex = hex.split('').map(char => char + char).join('');
         }
 
+        // If not a valid 6-digit hex after conversion, default to white
         if (hex.length !== 6) {
-            return '#FFFFFF'; // Default to white on invalid hex
+            return '#FFFFFF';
         }
 
         const r = parseInt(hex.substring(0, 2), 16);
         const g = parseInt(hex.substring(2, 4), 16);
         const b = parseInt(hex.substring(4, 6), 16);
 
+        // Calculate luminance
         const luminance = (0.299 * r + 0.587 * g + 0.114 * b);
 
+        // Return black or white based on luminance
         return luminance > 149 ? '#000000' : '#FFFFFF';
     };
 

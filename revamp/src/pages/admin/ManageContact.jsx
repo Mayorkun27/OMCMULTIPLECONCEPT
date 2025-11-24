@@ -13,12 +13,14 @@ const ManageContact = () => {
     const [selectedContact, setSelectedContact] = useState(null);
     const [contactToDelete, setContactToDelete] = useState(null);
     const [isDeleting, setIsDeleting] = useState(false);
+
+    const itemsPerPage = 10
     
     useEffect(() => {
         const fetchContacts = async () => {
             const loadingToast = toast.loading('Fetching contacts...');
             try {
-                const response = await api.call(`/contact`, 'GET');
+                const response = await api.call(`/contact?page=${currentPage}&per_page=${itemsPerPage}`, 'GET');
                 console.log(response)
 
                 if (response.status === 200) {
@@ -35,7 +37,7 @@ const ManageContact = () => {
         };
 
         fetchContacts()
-    }, [])
+    }, [currentPage])
 
     const handleDeleteContact = async (contactId) => {
         setIsDeleting(true);
@@ -66,33 +68,39 @@ const ManageContact = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {contacts.map((contact, index) => (
-                        <tr key={contact.id} className='last:border-b-0 border-b text-xs border-black/20'>
-                            <td className="p-4 text-start">{String(index+1).padStart(3, "0")}</td>
-                            <td className="p-4 text-center">{`${contact.first_name} ${contact.last_name}`}</td>
-                            <td className="p-4 text-center">{contact.email}</td>
-                            <td className="p-4 text-center">
-                                <p className='line-clamp-1'>{contact.message}</p>
-                            </td>
-                            <td className="p-4 text-center">{formatISODateToCustom(contact.created_at)}</td>
-                            <td className="p-4 text-xs">
-                                <div className="flex items-center justify-end gap-2">
-                                <button
-                                    onClick={() => setSelectedContact(contact)}
-                                    className="cursor-pointer bg-primary text-white text-md h-8 w-8 flex items-center justify-center rounded"
-                                >
-                                    <MdRemoveRedEye />
-                                </button>
-                                <button
-                                    onClick={() => setContactToDelete(contact)}
-                                    className="cursor-pointer bg-red-500 text-white text-md h-8 w-8 flex items-center justify-center rounded"
-                                >
-                                    <MdDelete />
-                                </button>
-                                </div>
-                            </td>
+                    {contacts.length === 0 ? (
+                        <tr>
+                            <td colSpan={6} className='text-center p-5 text-gray-600'>No contacts found</td>
                         </tr>
-                    ))}
+                    ) : ( 
+                        contacts.map((contact, index) => (
+                            <tr key={contact.id} className='last:border-b-0 border-b text-xs border-black/20'>
+                                <td className="p-4 text-start">{String(index+1).padStart(3, "0")}</td>
+                                <td className="p-4 text-center">{`${contact.first_name} ${contact.last_name}`}</td>
+                                <td className="p-4 text-center">{contact.email}</td>
+                                <td className="p-4 text-center">
+                                    <p className='line-clamp-1'>{contact.message}</p>
+                                </td>
+                                <td className="p-4 text-center">{formatISODateToCustom(contact.created_at)}</td>
+                                <td className="p-4 text-xs">
+                                    <div className="flex items-center justify-end gap-2">
+                                    <button
+                                        onClick={() => setSelectedContact(contact)}
+                                        className="cursor-pointer bg-primary text-white text-md h-8 w-8 flex items-center justify-center rounded"
+                                    >
+                                        <MdRemoveRedEye />
+                                    </button>
+                                    <button
+                                        onClick={() => setContactToDelete(contact)}
+                                        className="cursor-pointer bg-red-500 text-white text-md h-8 w-8 flex items-center justify-center rounded"
+                                    >
+                                        <MdDelete />
+                                    </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))
+                    )}
                 </tbody>
                 <tfoot>
                     <tr>

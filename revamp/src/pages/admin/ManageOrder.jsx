@@ -20,10 +20,12 @@ const ManageOrder = () => {
     newStatus: ''
   });
 
+  const itemsPerPage = 10;
+
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await api.call('/admin/orders');
+        const response = await api.call(`/admin/orders?page=${currentPage}&per_page=${itemsPerPage}`);
         if (response.status === 200) {
           const { data, current_page, last_page } = response.data.orders;
           setOrders(data);
@@ -38,7 +40,7 @@ const ManageOrder = () => {
       }
     };
     fetchOrders();
-  }, []);
+  }, [currentPage]);
 
   const openModal = (order) => {
     setSelectedOrder(order);
@@ -137,36 +139,42 @@ const ManageOrder = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredOrders.map((order, index) => (
-              <tr key={order.id} className='last:border-b-0 border-b border-black/20'>
-                <td className="p-4 text-xs text-start">{String(index + 1).padStart(3, "0")}</td>
-                <td className="p-4 text-xs text-center">{order.order_number}</td>
-                <td className="p-4 text-xs text-center">{order.user.name}</td>
-                <td className="p-4 text-xs text-center">{formatterUtility(Number(order.total_amount))}</td>
-                <td className="p-4 text-xs text-center capitalize">{order.status}</td>
-                <td className="p-4 text-xs text-center">
-                  <p>{formatISODateToCustom(order.created_at).split(" ")[0]}</p>
-                  <p>{formatISODateToCustom(order.created_at).split(" ")[1]}</p>
-                </td>
-                <td className="p-4 text-xs">
-                  <div className="flex items-center justify-end gap-2">
-                    <button
-                      onClick={() => openModal(order)}
-                      className="cursor-pointer bg-blue-500 text-white text-md h-8 w-8 flex items-center justify-center rounded"
-                    >
-                      <MdRemoveRedEye />
-                    </button>
-                    <button
-                      onClick={() => openUpdateModal(order)}
-                      className="cursor-pointer bg-green-500 text-white text-md h-8 w-8 flex items-center justify-center rounded"
-                      disabled={getAvailableStatuses(order.status).length === 0}
-                    >
-                      <MdEdit />
-                    </button>
-                  </div>
-                </td>
+            {filteredOrders.length === 0 ? (
+              <tr>
+                <td colSpan={7} className='text-center p-5 text-gray-600'>No Orders found</td>
               </tr>
-            ))}
+            ) : (
+              filteredOrders.map((order, index) => (
+                <tr key={order.id} className='last:border-b-0 border-b border-black/20'>
+                  <td className="p-4 text-xs text-start">{String(index + 1).padStart(3, "0")}</td>
+                  <td className="p-4 text-xs text-center">{order.order_number}</td>
+                  <td className="p-4 text-xs text-center">{order.user.name}</td>
+                  <td className="p-4 text-xs text-center">{formatterUtility(Number(order.total_amount))}</td>
+                  <td className="p-4 text-xs text-center capitalize">{order.status}</td>
+                  <td className="p-4 text-xs text-center">
+                    <p>{formatISODateToCustom(order.created_at).split(" ")[0]}</p>
+                    <p>{formatISODateToCustom(order.created_at).split(" ")[1]}</p>
+                  </td>
+                  <td className="p-4 text-xs">
+                    <div className="flex items-center justify-end gap-2">
+                      <button
+                        onClick={() => openModal(order)}
+                        className="cursor-pointer bg-blue-500 text-white text-md h-8 w-8 flex items-center justify-center rounded"
+                      >
+                        <MdRemoveRedEye />
+                      </button>
+                      <button
+                        onClick={() => openUpdateModal(order)}
+                        className="cursor-pointer bg-green-500 text-white text-md h-8 w-8 flex items-center justify-center rounded"
+                        disabled={getAvailableStatuses(order.status).length === 0}
+                      >
+                        <MdEdit />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
           <tfoot>
             <tr>
