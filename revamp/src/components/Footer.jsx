@@ -25,7 +25,7 @@ const Footer = () => {
             <ul className="md:col-span-1 flex flex-col gap-4">
               <h3 className='text-primary font-[Montserrat]! font-bold!'>Quick Links</h3>
               <Link
-                to={"/shop"}
+                to={"/shops"}
                 className="text-dark hover:text-dark/70 transition-all duration-300"
               >Shop</Link>
               <Link

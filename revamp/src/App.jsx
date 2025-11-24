@@ -39,7 +39,7 @@ function App() {
           element={<MainLayout children={<Register />} />}
         />
         <Route 
-          path="/shop"
+          path="/shops"
           element={<MainLayout children={<Shop />} />}
         />
         <Route 
@@ -47,7 +47,7 @@ function App() {
           element={<MainLayout children={<Order />} />}
         />
         <Route 
-          path="/shop/:id"
+          path="/shops/:id"
           element={<MainLayout children={<ProductDetails />} />}
         />
         <Route 

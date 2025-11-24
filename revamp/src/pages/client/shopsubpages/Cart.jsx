@@ -40,7 +40,7 @@ const Cart = () => {
           </div>
           {
             !Array.isArray(cart) || cart.length === 0 ? (
-              <p className='text-body_color font-[Montserrat]! font-medium! md:text-xl text-lg text-center py-5'>Your cart is empty. <Link to="/shop" className='text-secondary font-semibold!'>Go back to shop.</Link></p>
+              <p className='text-body_color font-[Montserrat]! font-medium! md:text-xl text-lg text-center py-5'>Your cart is empty. <Link to="/shops" className='text-secondary font-semibold!'>Go back to shop.</Link></p>
             ) : (
               <div className="grid gap-6">
                 {cart.map(item => (

@@ -109,11 +109,11 @@ const Home = () => {
             <p className='leading-7 md:text-sm text-xs text-white/50 lg:w-1/2 md:w-3/4 mx-auto'>At ONIPTTECH MULTIPLE CONCEPT, We bring colors to life! As a leading paint production company, we specialize in crafting high-quality paints and interior decoration solutions that transform spaces into stunning works of art.</p>
             <div className="flex items-center justify-center gap-4">
               <Link
-                to={"/shop"}
+                to={"/shops"}
                 className='px-6 py-2 bg-secondary rounded-full text-dark font-semibold'
               >Shop Now</Link>
               <Link
-                to={"/shop"}
+                to={"/shops"}
                 className='px-6 py-2 border-2 rounded-full border-light/50 text-lighter font-semibold'
               >Explore</Link>
             </div>
@@ -129,7 +129,7 @@ const Home = () => {
           <h3 className='text-3xl font-medium! font-[Montserrat]!'>Produced and Crafted with excellent material.</h3>
           <p className='text-body_color leading-7 text-sm'>With a passion for innovation and customer satisfaction, here's our extensive collection of premium paint for you to explore, each carefully crafted to inspire and transform your world with vibrant colors and style!</p>
           <Link
-            to={"/shop"}
+            to={"/shops"}
             className='md:block hidden'
           >
             <button
@@ -220,7 +220,7 @@ const Home = () => {
             }
           </div>
           <Link
-            to={"/shop"}
+            to={"/shops"}
             className='md:block hidden mt-8'
           >
             <button

@@ -18,7 +18,7 @@ const ProductCard = (props) => {
 
     return (
         <Link
-            to={`/shop/${id}`}
+            to={`/shops/${id}`}
             className='lg:hover:bg-body_color/10 lg:bg-transparent bg-body_color/10 transition-all duration-300 rounded-xl group min-h-80 overflow-hidden flex flex-col items-start relative'
         >
             <div className="bg-white rounded-t-[inherit] overflow-hidden h-[250px] mx-auto w-full">
