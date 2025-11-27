@@ -89,7 +89,7 @@ const Contact = () => {
                   <div className='w-8 h-8 bg-secondary flex items-center justify-center rounded-md'>
                     <MdPhone />
                   </div>
-                  <span className='w-[calc(100%-32px)] lg:text-xs md:text-sm text-xs'>12, Buraimon Street, Obanikoro Estate, Ikorodu Road, Lagos.</span>
+                  <span className='w-[calc(100%-32px)] lg:text-xs md:text-sm text-xs'>+2349153456034</span>
                 </div>
               </div>
             </div>

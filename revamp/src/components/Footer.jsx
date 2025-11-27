@@ -70,7 +70,7 @@ const Footer = () => {
                   <FaInstagram />
                 </Link>
                 <Link
-                  to={"https://wa.me/<number>"}
+                  to={"https://wa.me/+2349153456034"}
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="w-10 h-10 flex items-center justify-center bg-light hover:bg-primary rounded-full text-dark text-lg hover:text-white transition-all duration-300"
