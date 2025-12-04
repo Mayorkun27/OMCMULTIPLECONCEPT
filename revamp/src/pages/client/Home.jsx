@@ -113,7 +113,7 @@ const Home = () => {
                 className='px-6 py-2 bg-secondary rounded-full text-dark font-semibold'
               >Shop Now</Link>
               <Link
-                to={"/shops"}
+                to={"/explore"}
                 className='px-6 py-2 border-2 rounded-full border-light/50 text-lighter font-semibold'
               >Explore</Link>
             </div>
@@ -155,7 +155,7 @@ const Home = () => {
         </div>
         <div className="md:hidden block">
           <Link
-            to={""}
+            to={"/shops"}
           >
             <button
               type='button'

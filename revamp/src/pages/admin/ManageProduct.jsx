@@ -37,8 +37,24 @@ const UpdateProductForm = ({ product, onUpdate, onClose }) => {
             image: Yup.mixed().optional(), // Image is not required for updates
         }),
         onSubmit: async (values) => {
+            const formData = new FormData();
+
+            for (const key in values) {
+                // Ensure only non-file fields (or empty image string) are appended first
+                // If the key is 'image' and it's a File object, we handle it below.
+                if (key !== 'image' || typeof values[key] === 'string') {
+                    // Convert numbers to strings for FormData
+                    formData.append(key, values[key]);
+                }
+            }
+
+            if (values.image instanceof File) {
+                // The third argument is the filename, which is optional but good practice
+                formData.append('image', values.image, values.image.name);
+            }
+
             try {
-                const response = await api.call(`/products/${values.id}`, "POST", values);
+                const response = await api.call(`/products/${values.id}`, "POST", formData);
                 if (response) { // Assuming response is truthy on success
                     toast.success("Product updated successfully");
                     onUpdate(values); // Pass stringified colors back to parent

@@ -47,10 +47,10 @@ const NavBar = () => {
       name: "About Us",
       path: "/aboutus",
     },
-    // {
-    //   name: "Blog",
-    //   path: "/blog",
-    // },
+    {
+      name: "Explore Colors",
+      path: "/explore",
+    },
     {
       name: "Contact Us",
       path: "/contactus",

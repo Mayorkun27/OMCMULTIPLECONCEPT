@@ -19,6 +19,7 @@ import AdminLayout from "./layout/AdminLayout";
 import AddProduct from "./pages/admin/AddProduct";
 import Subscribers from "./pages/admin/Subscribers";
 import ManageContact from "./pages/admin/ManageContact";
+import Colors from "./pages/client/Colors";
 
 function App() {
   
@@ -41,6 +42,10 @@ function App() {
         <Route 
           path="/shops"
           element={<MainLayout children={<Shop />} />}
+        />
+        <Route 
+          path="/explore"
+          element={<MainLayout children={<Colors />} />}
         />
         <Route 
           path="/myorders"

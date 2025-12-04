@@ -116,3 +116,72 @@
   animation-play-state: paused;
 }
       
+
+
+/* src/index.css or src/App.css */
+
+/* Keyframes for left-to-right scrolling */
+@keyframes marquee-scroll-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%); /* Moves left by half its total width (original + duplicate) */
+  }
+}
+
+/* Keyframes for right-to-left scrolling */
+@keyframes marquee-scroll-right {
+  from {
+    transform: translateX(-50%); /* Starts at the end of the original content */
+  }
+  to {
+    transform: translateX(0); /* Moves right to the start of the original content */
+  }
+}
+
+/* Base animation for the inner container */
+.marquee-inner {
+  animation-duration: 180s; /* Adjust speed as needed */
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  /* We remove the animation-name here and apply it via inline style based on props */
+}
+
+/* Apply specific animations based on direction classes */
+.marquee-left {
+  animation-name: marquee-scroll-left-row1, marquee-scroll-left-row3; /* Example for row1, row3 */
+}
+.marquee-right {
+  animation-name: marquee-scroll-right-row2, marquee-scroll-right-row4; /* Example for row2, row4 */
+}
+
+
+/* Specific Keyframes for each row to allow independent control */
+/* These specific keyframes are applied via inline style 'animationName' in JSX */
+@keyframes marquee-scroll-left-row1 {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes marquee-scroll-right-row2 {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+@keyframes marquee-scroll-left-row3 {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes marquee-scroll-right-row4 {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+/* Optional: Pause animation on hover */
+.marquee-wrapper:hover .marquee-inner {
+  animation-play-state: paused;
+}
+
+/* Basic styling for the text-shadow on color names */
+.text-shadow-md {
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+}
