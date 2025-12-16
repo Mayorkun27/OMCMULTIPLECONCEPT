@@ -204,7 +204,24 @@ const ManageOrder = () => {
             <h3 className="text-lg font-bold mt-4">Items:</h3>
             <ul>
               {selectedOrder.items.map((item, index) => (
-                <li key={index}>{item.product.name} (x{item.quantity}) - {formatterUtility(Number(item.price))}</li>
+                <li key={index}>
+                  {item.product.name} (x{item.quantity}) - {formatterUtility(Number(item.price))}
+                  <ul className='list list-disc list-inside'>
+                    <li className="inline-flex justify-start items-center gap-2">
+                      Color:
+                      <div className='flex items-center gap-2'>
+                        <span
+                          className={`w-4 h-4 cursor-pointer border border-black/20 rounded-full`}
+                          style={{
+                            backgroundColor: item.product.color,
+                          }}
+                        ></span>
+                        <p className='uppercase'>{item.product.color}</p>
+                      </div>
+                    </li>
+                    <li>Size: {item.product.size} Liter(s)</li>
+                  </ul>
+                </li>
               ))}
             </ul>
           </div>
